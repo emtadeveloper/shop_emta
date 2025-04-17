@@ -26,6 +26,7 @@
     "passport-local": "^1.0.0",
     "request": "^2.88.2",
     "speakeasy": "^2.0.0",
+    "svg-captcha": "^1.4.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "yup": "^1.6.1"

@@ -31,7 +31,7 @@ const options = {
       },
     ],
   },
-  apis: [path.join(__dirname, "../../module/*/*.json")],
+  apis: [path.join(__dirname, "../../module/*/*.yml")],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

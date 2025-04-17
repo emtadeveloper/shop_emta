@@ -1,0 +1,31 @@
+paths:
+  /api/v1/captcha/{id}:
+    get:
+      tags:
+        - Captcha
+      summary: Get captcha based on the ID
+      description: Retrieve the captcha image for username or email.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The user identifier (e.g., username or email)
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successfully generated captcha image
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      captcha:
+                        type: string
+                        example: "<svg xmlns='http://www.w3.org/2000/svg'>...</svg>"
