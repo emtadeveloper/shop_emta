@@ -1,5 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
-const { errors } = require('./local');
+const { messages } = require('./local');
 
 class LocalizedError extends Error {
     constructor({ fa, en, status = StatusCodes.INTERNAL_SERVER_ERROR }) {
@@ -10,9 +10,42 @@ class LocalizedError extends Error {
 }
 
 exports.createLocalizedError = (key) => {
-    if (!errors[key]) {
+    if (!messages[key]) {
         throw new Error(`خطای تعریف نشده: ${key}`);
     }
 
-    return new LocalizedError(errors[key]);
+    return new LocalizedError(messages[key]);
+};
+
+
+
+
+class LocalizedSuccess {
+    constructor({ fa, en, status = StatusCodes.OK, data = null }) {
+        this.message = { fa, en };
+        this.status = status;
+        this.data = data;
+    }
+
+    sendResponse(res) {
+        const response = {
+            success: true,
+            message: this.message
+        };
+
+        if (this.data) {
+            response.data = this.data;
+        }
+
+        return res.status(this.status).json(response);
+    }
+}
+
+
+exports.createLocalizedSuccess = (res, key, data = null) => {
+    if (!messages[key]) {
+        throw new Error(`پیام موفقیت تعریف نشده: ${key}`);
+    }
+    const success = new LocalizedSuccess(messages[key], data);
+    return success.sendResponse(res);
 };

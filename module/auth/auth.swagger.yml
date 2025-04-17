@@ -1,0 +1,52 @@
+paths:
+  /api/v1/auth/register:
+    post:
+      summary: Register a new user
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - firstName
+                - lastName
+                - phone
+                - email
+                - username
+                - password
+              properties:
+                firstName:
+                  type: string
+                  example: "Ali"
+                lastName:
+                  type: string
+                  example: "Rezayi"
+                phone:
+                  type: string
+                  example: "09154144503"
+                email:
+                  type: string
+                  example: "emta137671@gmail.com"
+                username:
+                  type: string
+                  example: "alirezayi"
+                password:
+                  type: string
+                  example: "securePassword123"
+      responses:
+        201:
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "ثبت‌نام با موفقیت انجام شد"
+                  success:
+                    type: boolean
+                    example: true

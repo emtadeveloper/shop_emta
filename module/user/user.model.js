@@ -1,5 +1,4 @@
 const { mongoose } = require("mongoose");
-const addressSchema = require("./schema/address");
 const { hashPasswordBcrypt, comparePasswordBcrypt } = require("../../common/util/password");
 
 const addressSchema = new mongoose.Schema({
