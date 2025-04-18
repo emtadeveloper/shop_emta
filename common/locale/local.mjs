@@ -258,5 +258,15 @@ export const messages = {
         en: "OTP is expired",
         fa: 'رفرش توکن منقضی شده است',
         status: 400
+    },
+    loginFailed: {
+        en: "The login account was not recognized. Please log in to your account",
+        fa: "حساب کاربری جهت ورود شناسایی نشد لطفا وارد حساب کاربری خود شوید",
+        status: 401
+    },
+    success: {
+        fa: "با موفقیت دریافت شد",
+        en: "success recived data",
+        status: 200
     }
 };

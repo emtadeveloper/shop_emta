@@ -9,7 +9,8 @@ const roleSchema = new mongoose.Schema({
     },
     permissions: { type: [Number], default: [1, 2, 3] }
 }, {
-    timestamps: true,
+    timestamps: false,
+    versionKey: false,
 });
 
 export default mongoose.model('Role', roleSchema);

@@ -70,24 +70,24 @@ export default (passport) => {
                 }
 
                 const query = identifier.includes('@') ? { email: identifier } : { username: identifier };
-                const exists = await UserModel.findOne(query).populate("role")
+                const user = await UserModel.findOne(query).populate("role")
 
-                if (!exists) {
+                if (!user) {
                     return done(null, false, 'userNotFound');
                 }
 
-                const storedOtp = await getOtp(exists._id);
+                const storedOtp = await getOtp(user._id);
                 console.log(storedOtp);
 
                 if (!storedOtp || storedOtp !== code) {
                     return done(null, false, 'otpExpired');
                 }
 
-                await deleteOtp(exists._id);
+                await deleteOtp(user._id);
 
-                req.user = exists
+                req.user = user
 
-                return done(null, exists);
+                return done(null, user);
 
             } catch (error) {
                 console.error(error);

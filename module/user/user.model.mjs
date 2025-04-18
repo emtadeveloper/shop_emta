@@ -25,7 +25,20 @@ const userSchema = new mongoose.Schema({
     googleId: { type: String, default: null },
     addresses: { type: [addressSchema] },
     role: { type: mongoose.Types.ObjectId, ref: "Role" },
-}, { timestamps: true });
+}, {
+    timestamps: true,
+    versionKey: false,
+    toJSON: {
+        transform: function (doc, ret) {
+            delete ret.password;
+        }
+    },
+    toObject: {
+        transform: function (doc, ret) {
+            delete ret.password;
+        }
+    }
+});
 
 userSchema.pre("save", async function (next) {
     const user = this;

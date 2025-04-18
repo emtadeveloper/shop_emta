@@ -272,3 +272,49 @@ paths:
                   newAccessToken:
                     type: string
                     example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+/api/v1/auth/me:
+  get:
+    summary: Get user profile
+    tags:
+      - Auth
+    description: Get the authenticated user's profile using access token
+    responses:
+      200:
+        description: User profile retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: object
+                  properties:
+                    fa:
+                      type: string
+                      example: "پروفایل کاربر با موفقیت دریافت شد"
+                    en:
+                      type: string
+                      example: "User profile retrieved successfully"
+                    status:
+                      type: integer
+                      example: 200
+                data:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: "60c72b2f9b1d8c001f5f1f5f"
+                    name:
+                      type: string
+                      example: "Ali Rezayi"
+                    email:
+                      type: string
+                      example: "ali@example.com"
+                    phone:
+                      type: string
+                      example: "09123456789"
+
