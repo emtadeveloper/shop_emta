@@ -37,7 +37,7 @@ export const registerValidationSchema = yup.object({
         .required(messages.usernameRequired),
 });
 
-export const LoginValidationSchema = yup.object({
+export const loginValidationSchema = yup.object({
     login: yup
         .string()
         .trim()
@@ -66,4 +66,20 @@ export const LoginValidationSchema = yup.object({
         .string()
         .trim()
         .required(messages.captchaKeyRequired),
+});
+
+export const sendOtpValidationSchema = yup.object({
+    identifier: yup
+        .string()
+        .trim()
+        .required(messages.identifierRequired)
+        .test(
+            'is-phone-or-email',
+            messages.invalidPhoneOrEmail,
+            function (value) {
+                const phoneRegex = /^09\d{9}$/;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return phoneRegex.test(value) || emailRegex.test(value);
+            }
+        )
 });

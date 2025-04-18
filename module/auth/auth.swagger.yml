@@ -44,15 +44,28 @@ paths:
               schema:
                 type: object
                 properties:
-                  message:
-                    type: string
-                    example: "ثبت‌نام با موفقیت انجام شد"
                   success:
                     type: boolean
                     example: true
+                  message:
+                    type: object
+                    properties:
+                      fa:
+                        type: string
+                        example: "ثبت‌نام با موفقیت انجام شد"
+                      en:
+                        type: string
+                        example: "User registered successfully"
+                      status:
+                        type: integer
+                        example: 201
+                  data:
+                    type: object
+                    example: {}
+
   /api/v1/auth/login:
     post:
-      summary: login user
+      summary: Login user
       tags:
         - Auth
       requestBody:
@@ -85,9 +98,72 @@ paths:
               schema:
                 type: object
                 properties:
-                  message:
-                    type: string
-                    example: "ورود با موفقیت انجام شد"
                   success:
                     type: boolean
                     example: true
+                  message:
+                    type: object
+                    properties:
+                      fa:
+                        type: string
+                        example: "ورود با موفقیت انجام شد"
+                      en:
+                        type: string
+                        example: "Login successful"
+                      status:
+                        type: integer
+                        example: 200
+                  data:
+                    type: object
+                    properties:
+                      accessToken:
+                        type: string
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                      refreshToken:
+                        type: string
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+  /api/v1/auth/send-otp:
+    post:
+      summary: Send OTP code to email or mobile number
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - identifier
+              properties:
+                identifier:
+                  type: string
+                  description: ایمیل یا شماره موبایل کاربر
+                  example: "09123456789"
+      responses:
+        200:
+          description: OTP sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: object
+                    properties:
+                      fa:
+                        type: string
+                        example: "کد OTP با موفقیت ارسال شد"
+                      en:
+                        type: string
+                        example: "OTP sent successfully"
+                      status:
+                        type: integer
+                        example: 200
+                  data:
+                    type: object
+                    example: {}

@@ -2,6 +2,10 @@ import { createLocalizedError, } from "../../common/locale/localizationHelper.mj
 import UserModel from '../user/user.model.mjs'
 import RoleModel from '../role/role.model.mjs'
 import { generateAccessToken, generateRefreshToken } from "../../common/util/token.mjs";
+import speakeasy from 'speakeasy'
+import { saveOtp } from "./auth.model.mjs";
+import sendSms from "../../common/util/smsSender.mjs"
+import sendMail from "../../common/util/mailer.mjs"
 
 export const registerUser = async (userData) => {
     const { email, username } = userData;
@@ -31,4 +35,28 @@ export const loginUser = async (userData) => {
     return { accessToken, refreshToken }
 };
 
-export default { registerUser, loginUser }
+export const sendOtpUser = async (userData) => {
+    const { identifier } = userData
+    const query = identifier.includes('@') ? { email: identifier } : { username: identifier };
+    const exists = await UserModel.findOne(query)
+
+    if (!exists) {
+        throw createLocalizedError("userNotFound");
+    }
+
+    const otpSecret = speakeasy.totp({
+        secret: speakeasy.generateSecret().base32,
+        encoding: 'base32',
+        digits: 6
+    });
+
+    await saveOtp(exists._id, otpSecret)
+
+    identifier.includes('@')
+        ? await sendMail(exists.email, "Your OTP Code", `Your OTP code is: ${otpSecret}`)
+        : await sendSms({ toNum: exists.phone, code: otpSecret });
+
+    return { otpSecret };
+}
+
+export default { registerUser, loginUser, sendOtpUser }

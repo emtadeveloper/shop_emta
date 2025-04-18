@@ -189,5 +189,10 @@ export const messages = {
         en: "Captcha key is required",
         status: 400,
     },
+    sentOtpSuccess: {
+        fa: "کد یکبار مصرف برای شما ارسال شد",
+        en: "Send Otp Success",
+        status: 200,
+    }
 
 };

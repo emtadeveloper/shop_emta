@@ -1,5 +1,5 @@
 import { createLocalizedSuccess, createLocalizedError } from "../../common/locale/localizationHelper.mjs"
-import { registerValidationSchema, LoginValidationSchema } from "./auth.validator.mjs"
+import { registerValidationSchema, loginValidationSchema, sendOtpValidationSchema } from "./auth.validator.mjs"
 import authService from "./auth.service.mjs"
 import passport from "passport";
 
@@ -16,7 +16,7 @@ export const register = async (req, res, next) => {
 }
 
 export const login = async (req, res, next) => {
-    await LoginValidationSchema.validate(req.body, { abortEarly: false });
+    await loginValidationSchema.validate(req.body, { abortEarly: false });
     passport.authenticate('local-login', async (err, user, info) => {
 
         if (info) {
@@ -34,6 +34,16 @@ export const login = async (req, res, next) => {
 }
 
 export const send = async (req, res, next) => {
+    try {
+        await sendOtpValidationSchema.validate(req.body, { abortEarly: false });
+
+        const data = await authService.sendOtpUser(req.body)
+
+        return createLocalizedSuccess(res, 'sentOtpSuccess', data);
+
+    } catch (error) {
+        next(error)
+    }
 
 }
 
