@@ -1,13 +1,12 @@
-// captcha/captcha.service.js
-const svgCaptcha = require("svg-captcha");
-const { saveCaptcha, getCaptcha, deleteCaptcha } = require("./captcha.model");
-const { createLocalizedError } = require('../../common/locale/localizationHelper');
+import svgCaptcha from "svg-captcha"
+import { saveCaptcha, getCaptcha, deleteCaptcha } from "./captcha.model.mjs"
+import { createLocalizedError } from '../../common/locale/localizationHelper.mjs'
 
-exports.generateCaptchaSvg = () => {
+export const generateCaptchaSvg = () => {
     return svgCaptcha.create({ size: 5, noise: 2, color: true });
 };
 
-exports.storeCaptcha = async (key, text) => {
+export const storeCaptcha = async (key, text) => {
     try {
         await saveCaptcha(key, text);
         throw createLocalizedError("captchaStoreError");
@@ -15,7 +14,7 @@ exports.storeCaptcha = async (key, text) => {
     }
 };
 
-exports.verifyCaptcha = async (key, input) => {
+export const verifyCaptcha = async (key, input) => {
     try {
         const stored = await getCaptcha(key);
         if (!stored) {
@@ -27,4 +26,10 @@ exports.verifyCaptcha = async (key, input) => {
     } catch (error) {
         throw createLocalizedError("captchaVerifyError");
     }
+};
+
+export default {
+    generateCaptchaSvg,
+    storeCaptcha,
+    verifyCaptcha
 };

@@ -1,5 +1,5 @@
-const { StatusCodes } = require("http-status-codes");
-const { messages } = require('./local');
+import { StatusCodes } from "http-status-codes"
+import { messages } from './local.mjs'
 
 class LocalizedError extends Error {
     constructor({ fa, en, status = StatusCodes.INTERNAL_SERVER_ERROR }) {
@@ -9,7 +9,7 @@ class LocalizedError extends Error {
     }
 }
 
-exports.createLocalizedError = (key) => {
+export const createLocalizedError = (key) => {
     if (!messages[key]) {
         throw new Error(`خطای تعریف نشده: ${key}`);
     }
@@ -42,7 +42,8 @@ class LocalizedSuccess {
 }
 
 
-exports.createLocalizedSuccess = (res, key, data = null) => {
+export const createLocalizedSuccess = (res, key, data = null) => {
+    console.log({ res });
     if (!messages[key]) {
         throw new Error(`پیام موفقیت تعریف نشده: ${key}`);
     }

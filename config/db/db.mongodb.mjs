@@ -1,8 +1,6 @@
-const mongoose = require("mongoose");
-const RoleModel = require("../../module/role/role.model");
-const { Role, permissions } = require("../../common/constant");
-
-console.log(RoleModel);
+import mongoose from "mongoose"
+import RoleModel from "../../module/role/role.model.mjs"
+import { Role, permissions } from "../../common/constant/index.mjs"
 
 const connectionDB = async () => {
     try {
@@ -27,4 +25,4 @@ const connectionDB = async () => {
     }
 };
 
-module.exports = connectionDB;
+export default connectionDB

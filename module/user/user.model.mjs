@@ -1,5 +1,6 @@
-const { mongoose } = require("mongoose");
-const { hashPasswordBcrypt, comparePasswordBcrypt } = require("../../common/util/password");
+import { mongoose } from "mongoose";
+import { hashPasswordBcrypt, comparePasswordBcrypt } from "../../common/util/password.mjs";
+import { createLocalizedError } from "../../common/locale/localizationHelper.mjs";
 
 const addressSchema = new mongoose.Schema({
     type: { type: String, enum: ["home", "work", "other"], default: "home" },
@@ -18,7 +19,7 @@ const userSchema = new mongoose.Schema({
     phone: { type: String, required: true, unique: true },
     username: { type: String, required: true },
     email: { type: String, required: true },
-    password: { type: String, required: true, },
+    password: { type: String, required: true },
     firstName: { type: String },
     lastName: { type: String },
     googleId: { type: String, default: null },
@@ -33,13 +34,26 @@ userSchema.pre("save", async function (next) {
         user.password = await hashPasswordBcrypt(user.password);
         next();
     } catch (error) {
+        throw createLocalizedError("passwordWeak")
+    }
+});
+
+userSchema.post("save", function (error, doc, next) {
+    if (error.code === 11000) {
+        if (error.message.includes("phone")) {
+            throw createLocalizedError("phoneAlreadyExists")
+        } else if (error.message.includes("email")) {
+            throw createLocalizedError("emailAlreadyExists")
+        } else if (error.message.includes("username")) {
+            throw createLocalizedError("usernameAlreadyExists")
+        }
+    } else {
         next(error);
     }
 });
 
 userSchema.methods.comparePassword = async function (candidatePassword) {
-    return await comparePasswordBcrypt(candidatePassword, this.password)
+    return await comparePasswordBcrypt(candidatePassword, this.password);
 };
 
-const User = mongoose.model("User", userSchema);
-module.exports = User;
+export default mongoose.model("User", userSchema);

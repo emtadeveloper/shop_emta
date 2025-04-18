@@ -1,6 +1,6 @@
-const services = require("./captcha.service");
+import services from "./captcha.service.mjs"
 
-exports.getCaptcha = async (req, res, next) => {
+export const getCaptcha = async (req, res, next) => {
     try {
         const id = req.params.id;
         const captcha = services.generateCaptchaSvg();

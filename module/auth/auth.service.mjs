@@ -1,15 +1,14 @@
-const { createLocalizedError } = require("../../common/locale/localizationHelper");
-const UserModel = require('../user/user.model');
-const RoleModel = require('../role/role.model');
+import { createLocalizedError, } from "../../common/locale/localizationHelper.mjs"
+import UserModel from '../user/user.model.mjs'
+import RoleModel from '../role/role.model.mjs'
 
-exports.registerUser = async (userData) => {
+export const registerUser = async (userData) => {
     const { email, username } = userData;
-
-    try {
         const exists = await UserModel.findOne({ $or: [{ email }, { username }] });
-        if (exists) {
-            throw createLocalizedError("userAlreadyExists");
-        }
+
+        // if (exists) {
+        //     throw createLocalizedError("userAlreadyExists");
+        // }
 
         const userCount = await UserModel.countDocuments();
 
@@ -22,7 +21,7 @@ exports.registerUser = async (userData) => {
         const roles = await RoleModel.findOne({ roleName: "user" });
         const createUser = await UserModel.create({ ...userData, role: roles._id });
         return createUser.toObject();
-    } catch (error) {
-        next(error)
-    }
+
 };
+
+export default { registerUser }

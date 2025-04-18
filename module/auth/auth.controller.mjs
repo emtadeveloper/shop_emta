@@ -1,8 +1,8 @@
-const { createLocalizedSuccess } = require("../../common/locale/localizationHelper");
-const { registerValidationSchema } = require("./auth.validator");
-const authService = require("./auth.service");
+import { createLocalizedSuccess } from "../../common/locale/localizationHelper.mjs"
+import { registerValidationSchema } from "./auth.validator.mjs"
+import authService from "./auth.service.mjs"
 
-exports.register = async (req, res, next) => {
+export const register = async (req, res, next) => {
     try {
         await registerValidationSchema.validate(req.body, { abortEarly: false });
 
@@ -13,3 +13,5 @@ exports.register = async (req, res, next) => {
         next(error);
     }
 }
+
+export default { register }

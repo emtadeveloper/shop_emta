@@ -1,7 +1,7 @@
-const { StatusCodes } = require("http-status-codes");
-const { HttpError } = require('http-errors');
+import { StatusCodes } from "http-status-codes"
+import { HttpError } from 'http-errors'
 
-const ErrorHandler = (err, req, res, next) => {
+export const ErrorHandler = (err, req, res, next) => {
     if (err instanceof HttpError) {
         return res.status(err.status || StatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
@@ -26,7 +26,7 @@ const ErrorHandler = (err, req, res, next) => {
 };
 
 
-const NotFoundError = (req, res, next) => {
+export const NotFoundError = (req, res, next) => {
     res.status(StatusCodes.NOT_FOUND).json({
         success: false,
         message: {
@@ -35,5 +35,3 @@ const NotFoundError = (req, res, next) => {
         }
     });
 };
-
-module.exports = { ErrorHandler, NotFoundError };

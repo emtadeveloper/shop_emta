@@ -1,6 +1,6 @@
-const yup = require('yup');
+import yup from 'yup'
 
-exports.registerValidationSchema = yup.object({
+export const registerValidationSchema = yup.object({
     firstName: yup
         .string()
         .trim()
