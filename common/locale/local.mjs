@@ -118,5 +118,76 @@ export const messages = {
         fa: "ورود با موفقیت انجام شد",
         en: "success login",
         status: 200
-    }
+    },
+    firstNameRequired: {
+        fa: "وارد کردن نام الزامی است",
+        en: "First name is required",
+        status: 400,
+    },
+    lastNameRequired: {
+        fa: "وارد کردن نام خانوادگی الزامی است",
+        en: "Last name is required",
+        status: 400,
+    },
+    phoneRequired: {
+        fa: "وارد کردن شماره موبایل الزامی است",
+        en: "Phone number is required",
+        status: 400,
+    },
+    invalidPhone: {
+        fa: "شماره موبایل معتبر نیست",
+        en: "Invalid phone number",
+        status: 400,
+    },
+    emailRequired: {
+        fa: "وارد کردن ایمیل الزامی است",
+        en: "Email is required",
+        status: 400,
+    },
+    invalidEmail: {
+        fa: "ایمیل معتبر نیست",
+        en: "Invalid email",
+        status: 400,
+    },
+    passwordRequired: {
+        fa: "وارد کردن رمز عبور الزامی است",
+        en: "Password is required",
+        status: 400,
+    },
+    passwordMinLength: {
+        fa: "رمز عبور باید حداقل ۶ کاراکتر باشد",
+        en: "Password must be at least 6 characters",
+        status: 400,
+    },
+    usernameRequired: {
+        fa: "وارد کردن نام کاربری الزامی است",
+        en: "Username is required",
+        status: 400,
+    },
+    usernameMinLength: {
+        fa: "نام کاربری باید حداقل ۳ کاراکتر باشد",
+        en: "Username must be at least 3 characters",
+        status: 400,
+    },
+    loginRequired: {
+        fa: "وارد کردن ایمیل یا نام کاربری الزامی است",
+        en: "Email or username is required",
+        status: 400,
+    },
+    invalidEmailOrUsername: {
+        fa: "ایمیل یا نام کاربری وارد شده معتبر نیست",
+        en: "Invalid email or username",
+        status: 400,
+    },
+    captchaRequired: {
+        fa: "کپچا الزامی است",
+        en: "Captcha is required",
+        status: 400,
+    },
+    captchaKeyRequired: {
+        fa: "کلید کپچا الزامی است",
+        en: "Captcha key is required",
+        status: 400,
+    },
+
 };

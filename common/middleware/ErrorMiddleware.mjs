@@ -9,6 +9,26 @@ export const ErrorHandler = (err, req, res, next) => {
         });
     }
 
+    if (err.name === "ValidationError") {
+        const errors = {};
+        err.inner.forEach((e) => {
+            const key = e.path || "unknown";
+            const { status, ...messages } = { ...e.errors[0] }
+            if (errors[key]) {
+                errors[key].fa += " & " + messages.fa;
+                errors[key].en += " & " + messages.en;
+            } else {
+                errors[key] = messages
+            }
+        });
+
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            success: false,
+            message: errors
+        });
+    }
+
+
     if (err.message) {
         return res.status(err.status || StatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
