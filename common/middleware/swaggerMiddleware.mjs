@@ -36,11 +36,8 @@ const options = {
   apis: [apiFilesGlob],
 };
 
-console.log("Looking for swagger files at:", apiFilesGlob);
-
 const swaggerSpec = swaggerJSDoc(options);
 
 export default (app) => {
   app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
-  console.log("Swagger docs up at /api-docs");
 };

@@ -88,5 +88,35 @@ export const messages = {
         fa: "ثبت‌نام با خطا مواجه شد",
         en: "Registration failed",
         status: 500,
+    },
+    captchaRequired: {
+        fa: "کپچا وارد نشده است",
+        en: "Captcha is required",
+        status: 400,
+    },
+    captchaNotFound: {
+        fa: "کپچای مورد نظر پیدا نشد",
+        en: "Captcha not found",
+        status: 404,
+    },
+    invalidCaptcha: {
+        fa: "کپچا نامعتبر است",
+        en: "Invalid captcha",
+        status: 400,
+    },
+    userNotFound: {
+        fa: "کاربر یافت نشد",
+        en: "User not found",
+        status: 404,
+    },
+    passwordMismatch: {
+        fa: "رمز عبور با تأییدیه تطابق ندارد",
+        en: "Password does not match the confirmation",
+        status: 400,
+    },
+    LoginSuccess: {
+        fa: "ورود با موفقیت انجام شد",
+        en: "success login",
+        status: 200
     }
 };

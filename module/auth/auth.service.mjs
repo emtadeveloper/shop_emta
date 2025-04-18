@@ -1,27 +1,34 @@
 import { createLocalizedError, } from "../../common/locale/localizationHelper.mjs"
 import UserModel from '../user/user.model.mjs'
 import RoleModel from '../role/role.model.mjs'
+import { generateAccessToken, generateRefreshToken } from "../../common/util/token.mjs";
 
 export const registerUser = async (userData) => {
     const { email, username } = userData;
-        const exists = await UserModel.findOne({ $or: [{ email }, { username }] });
+    const exists = await UserModel.findOne({ $or: [{ email }, { username }] });
 
-        // if (exists) {
-        //     throw createLocalizedError("userAlreadyExists");
-        // }
+    if (exists) {
+        throw createLocalizedError("userAlreadyExists");
+    }
 
-        const userCount = await UserModel.countDocuments();
+    const userCount = await UserModel.countDocuments();
 
-        if (userCount === 0) {
-            const roles = await RoleModel.findOne({ roleName: "admin" });
-            const createUser = await UserModel.create({ ...userData, role: roles._id });
-            return createUser.toObject();
-        }
-
-        const roles = await RoleModel.findOne({ roleName: "user" });
+    if (userCount === 0) {
+        const roles = await RoleModel.findOne({ roleName: "admin" });
         const createUser = await UserModel.create({ ...userData, role: roles._id });
         return createUser.toObject();
+    }
+
+    const roles = await RoleModel.findOne({ roleName: "user" });
+    const createUser = await UserModel.create({ ...userData, role: roles._id });
+    return createUser.toObject();
 
 };
 
-export default { registerUser }
+export const loginUser = async (userData) => {
+    const accessToken = await generateAccessToken(userData)
+    const refreshToken = await generateRefreshToken(userData)
+    return { accessToken, refreshToken }
+};
+
+export default { registerUser, loginUser }

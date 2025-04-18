@@ -21,7 +21,7 @@ export const createLocalizedError = (key) => {
 
 
 class LocalizedSuccess {
-    constructor({ fa, en, status = StatusCodes.OK, data = null }) {
+    constructor({ fa, en, status = StatusCodes.OK }, data = null) {
         this.message = { fa, en };
         this.status = status;
         this.data = data;
@@ -30,7 +30,7 @@ class LocalizedSuccess {
     sendResponse(res) {
         const response = {
             success: true,
-            message: this.message
+            message: this.message,
         };
 
         if (this.data) {
@@ -43,7 +43,6 @@ class LocalizedSuccess {
 
 
 export const createLocalizedSuccess = (res, key, data = null) => {
-    console.log({ res });
     if (!messages[key]) {
         throw new Error(`پیام موفقیت تعریف نشده: ${key}`);
     }

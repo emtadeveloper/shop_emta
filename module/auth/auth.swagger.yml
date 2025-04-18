@@ -50,3 +50,44 @@ paths:
                   success:
                     type: boolean
                     example: true
+  /api/v1/auth/login:
+    post:
+      summary: login user
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - login
+                - password
+              properties:
+                login:
+                  type: string
+                  example: "alirezayi"
+                captcha:
+                  type: string
+                  example: "1234535"
+                captchaKey:
+                  type: string
+                  example: "345435435435345"
+                password:
+                  type: string
+                  example: "securePassword123"
+      responses:
+        200:
+          description: User login successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "ورود با موفقیت انجام شد"
+                  success:
+                    type: boolean
+                    example: true

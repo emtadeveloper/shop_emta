@@ -13,3 +13,9 @@ export const getCaptcha = async (key) => {
 export const deleteCaptcha = async (key) => {
     await redis.del(`${CAPTCHA_PREFIX}${key}`);
 }
+
+export default {
+    saveCaptcha,
+    getCaptcha,
+    deleteCaptcha
+}
