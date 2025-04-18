@@ -244,4 +244,19 @@ export const messages = {
         en: "OTP is expired",
         status: 400,
     },
+    refreshTokenRequired: {
+        en: "OTP is required",
+        fa: 'رفرش توکن الزامی است',
+        status: 400
+    },
+    InvalidrefreshToken: {
+        en: "OTP is invalid",
+        fa: 'رفرش توکن نامعتبر است',
+        status: 400
+    },
+    refreshTokenExpire: {
+        en: "OTP is expired",
+        fa: 'رفرش توکن منقضی شده است',
+        status: 400
+    }
 };

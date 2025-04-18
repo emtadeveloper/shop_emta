@@ -6,6 +6,8 @@ import speakeasy from 'speakeasy'
 import { saveOtp } from "./auth.model.mjs";
 import sendSms from "../../common/util/smsSender.mjs"
 import sendMail from "../../common/util/mailer.mjs"
+import jwt from "jsonwebtoken";
+import redis from "../../config/db/db.redis.mjs";
 
 export const registerUser = async (userData) => {
     const { email, username } = userData;
@@ -37,6 +39,7 @@ export const loginUser = async (userData) => {
 
 export const sendOtpUser = async (userData) => {
     const { identifier } = userData
+    console.log(identifier);
     const query = identifier.includes('@') ? { email: identifier } : { username: identifier };
     const exists = await UserModel.findOne(query)
 
@@ -59,4 +62,30 @@ export const sendOtpUser = async (userData) => {
     return { otpSecret };
 }
 
-export default { registerUser, loginUser, sendOtpUser }
+export const refreshTokenUser = async (token) => {
+
+    const payload = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET_KET);
+    const existUser = await UserModel.findOne({ id: payload._id }).populate("role")
+
+    if (!existUser) {
+        throw createLocalizedError("userNotFound");
+    }
+
+    const savedToken = await redis.get(`refresh:${existUser._id}`);
+
+    if (!savedToken) {
+        throw createLocalizedError("refreshTokenExpire");
+    }
+
+    if (token !== savedToken) {
+        throw createLocalizedError("InvalidrefreshToken");
+    }
+
+    const accessToken = await generateAccessToken(existUser)
+    const refreshToken = await generateRefreshToken(existUser)
+
+    return { accessToken, refreshToken }
+
+}
+
+export default { registerUser, loginUser, sendOtpUser, refreshTokenUser }

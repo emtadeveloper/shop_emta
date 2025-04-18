@@ -105,3 +105,10 @@ export const otpValidationSchema = yup.object({
         .length(6, messages.invalidOtpLength)
         .required(messages.codeRequired)
 });
+
+export const refreshTokenValidationSchema = yup.object({
+    refreshToken: yup
+        .string()
+        .trim()
+        .required(messages.refreshTokenRequired)
+});

@@ -1,5 +1,5 @@
 import { createLocalizedSuccess, createLocalizedError } from "../../common/locale/localizationHelper.mjs"
-import { registerValidationSchema, loginValidationSchema, sendOtpValidationSchema, otpValidationSchema } from "./auth.validator.mjs"
+import { registerValidationSchema, loginValidationSchema, sendOtpValidationSchema, otpValidationSchema, refreshTokenValidationSchema } from "./auth.validator.mjs"
 import authService from "./auth.service.mjs"
 import passport from "passport";
 
@@ -63,5 +63,16 @@ export const verify = async (req, res, next) => {
     })(req, res, next);
 }
 
+export const refreshToken = async (req, res, next) => {
+    try {
+        const { refreshToken } = req.body
+        await refreshTokenValidationSchema.validate(req.body)
+        const data = await authService.refreshTokenUser(refreshToken);
+        return createLocalizedSuccess(res, 'LoginSuccess', data);
+    } catch (error) {
+        next(error)
+    }
+}
 
-export default { register, login, send, verify }
+
+export default { register, login, send, verify, refreshToken }
