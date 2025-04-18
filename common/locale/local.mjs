@@ -193,6 +193,55 @@ export const messages = {
         fa: "کد یکبار مصرف برای شما ارسال شد",
         en: "Send Otp Success",
         status: 200,
-    }
-
+    },
+    identifierAndOtpRequired: {
+        fa: " رمزیکبار مصرف و شماره همراه یا ایمیل اجباری می باشد",
+        en: "identifier And Otp is Required",
+        status: 400,
+    },
+    otpExpired: {
+        en: "otp is expired",
+        fa: "رمز یکبار مصرف منقضی شده است ",
+        status: 400,
+    },
+    identifierRequired: {
+        fa: "شناسه (ایمیل یا شماره موبایل) الزامی است.",
+        en: "Identifier (email or phone number) is required",
+        status: 400,
+    },
+    invalidPhoneOrEmail: {
+        fa: "شناسه وارد شده باید شماره موبایل یا ایمیل معتبر باشد.",
+        en: "The identifier must be a valid phone number or email",
+        status: 400,
+    },
+    codeRequired: {
+        fa: "کد OTP الزامی است.",
+        en: "OTP code is required",
+        status: 400,
+    },
+    invalidOtpLength: {
+        fa: "کد OTP باید 6 رقمی باشد.",
+        en: "OTP code must be 6 digits",
+        status: 400,
+    },
+    captchaKeyRequired: {
+        fa: "کلید کپچا الزامی است.",
+        en: "Captcha key is required",
+        status: 400,
+    },
+    sentOtpSuccess: {
+        fa: "کد یکبار مصرف برای شما ارسال شد.",
+        en: "Send Otp Success",
+        status: 200,
+    },
+    identifierAndOtpRequired: {
+        fa: "رمز یکبار مصرف و شماره همراه یا ایمیل اجباری می باشد.",
+        en: "Identifier and OTP are required",
+        status: 400,
+    },
+    otpExpired: {
+        fa: "رمز یکبار مصرف منقضی شده است.",
+        en: "OTP is expired",
+        status: 400,
+    },
 };

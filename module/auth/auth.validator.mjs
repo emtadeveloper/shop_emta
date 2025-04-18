@@ -83,3 +83,25 @@ export const sendOtpValidationSchema = yup.object({
             }
         )
 });
+
+export const otpValidationSchema = yup.object({
+    identifier: yup
+        .string()
+        .trim()
+        .required(messages.identifierRequired)
+        .test(
+            'is-phone-or-email',
+            messages.invalidPhoneOrEmail,
+            function (value) {
+                const phoneRegex = /^09\d{9}$/;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return phoneRegex.test(value) || emailRegex.test(value);
+            }
+        ),
+
+    code: yup
+        .string()
+        .trim()
+        .length(6, messages.invalidOtpLength)
+        .required(messages.codeRequired)
+});
