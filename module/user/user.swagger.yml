@@ -1,0 +1,216 @@
+/api/v1/user/address:
+  post:
+    summary: Create a new user address
+    tags:
+      - User Address
+    description: Create a new address for the user
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+                enum: [home, work, other]
+                example: "home"
+              postalCode:
+                type: string
+                example: "9876543210"
+              address:
+                type: string
+                example: "Boulevard Kashavarz, No. 50"
+              cityId:
+                type: integer
+                example: 110
+              location:
+                type: object
+                properties:
+                  lat:
+                    type: number
+                    example: 36.1234
+                  lng:
+                    type: number
+                    example: 52.4567
+    responses:
+      201:
+        description: Address created successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: object
+                  properties:
+                    fa:
+                      type: string
+                      example: "آدرس با موفقیت ایجاد شد"
+                    en:
+                      type: string
+                      example: "Address created successfully"
+                    status:
+                      type: integer
+                      example: 201
+                data:
+                  type: object
+                  properties:
+                    addresses:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            example: "home"
+                          postalCode:
+                            type: string
+                            example: "9876543210"
+                          address:
+                            type: string
+                            example: "Boulevard Kashavarz, No. 50"
+                          cityId:
+                            type: integer
+                            example: 110
+                          location:
+                            type: object
+                            properties:
+                              lat:
+                                type: number
+                                example: 36.1234
+                              lng:
+                                type: number
+                                example: 52.4567
+/api/v1/user/address/{id}:
+  put:
+    summary: Update a specific user address
+    tags:
+      - User Address
+    description: Update the information of a specific address based on its ID
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the address to be updated
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+                enum: [home, work, other]
+                example: "work"
+              postalCode:
+                type: string
+                example: "9876543210"
+              address:
+                type: string
+                example: "Boulevard Kashavarz, No. 50"
+              cityId:
+                type: integer
+                example: 110
+              location:
+                type: object
+                properties:
+                  lat:
+                    type: number
+                    example: 36.1234
+                  lng:
+                    type: number
+                    example: 52.4567
+    responses:
+      200:
+        description: Address updated successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: object
+                  properties:
+                    fa:
+                      type: string
+                      example: "آدرس با موفقیت به‌روزرسانی شد"
+                    en:
+                      type: string
+                      example: "Address updated successfully"
+                    status:
+                      type: integer
+                      example: 200
+                data:
+                  type: object
+                  properties:
+                    addresses:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            example: "work"
+                          postalCode:
+                            type: string
+                            example: "9876543210"
+                          address:
+                            type: string
+                            example: "Boulevard Kashavarz, No. 50"
+                          cityId:
+                            type: integer
+                            example: 110
+                          location:
+                            type: object
+                            properties:
+                              lat:
+                                type: number
+                                example: 36.1234
+                              lng:
+                                type: number
+                                example: 52.4567
+  delete:
+    summary: Delete a specific user address
+    tags:
+      - User Address
+    description: Delete a specific address based on its ID
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the address to be deleted
+    responses:
+      200:
+        description: Address deleted successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: object
+                  properties:
+                    fa:
+                      type: string
+                      example: "آدرس با موفقیت حذف شد"
+                    en:
+                      type: string
+                      example: "Address deleted successfully"
+                    status:
+                      type: integer
+                      example: 200

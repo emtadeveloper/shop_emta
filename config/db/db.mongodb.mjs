@@ -1,6 +1,8 @@
-import mongoose from "mongoose"
-import RoleModel from "../../module/role/role.model.mjs"
-import { Role, permissions } from "../../common/constant/index.mjs"
+import mongoose from "mongoose";
+import RoleModel from "../../module/role/role.model.mjs";
+import constants from "../../common/constant/index.mjs";
+
+const { ROLES, PERMISSIONS } = constants;
 
 const connectionDB = async () => {
     try {
@@ -9,13 +11,15 @@ const connectionDB = async () => {
         const roleCount = await RoleModel.countDocuments();
 
         if (roleCount === 0) {
+
             await RoleModel.create({
-                roleName: Role[0],
-                permissions: permissions
+                roleName: ROLES.USER,
+                permissions: PERMISSIONS.USER
             });
 
             await RoleModel.create({
-                roleName: Role[1]
+                roleName: ROLES.ADMIN,
+                permissions: PERMISSIONS.ADMIN
             });
         }
 
@@ -25,4 +29,4 @@ const connectionDB = async () => {
     }
 };
 
-export default connectionDB
+export default connectionDB;

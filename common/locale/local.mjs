@@ -9,6 +9,111 @@ export const messages = {
         en: "Captcha not found",
         status: 404,
     },
+    successCreateAddress: {
+        fa: "آدرس با موفقیت ایجاد شد",
+        en: "Address created successfully",
+        status: 201,
+    },
+    successUpdateAddress: {
+        fa: "آدرس با موفقیت روزرسانی ایجاد شد",
+        en: "Address updated successfully",
+        status: 200,
+    },
+    invalidUserId: {
+        fa: "شناسه کاربر معتبر نیست",
+        en: "Invalid user ID",
+        status: 400,
+    },
+    successDeleteAddress: {
+        fa: "آدرس با موفقیت حذف  شد",
+        en: "Address deleted successfully",
+        status: 200,
+    },
+    addressNotFound: {
+        fa: "آدرس پیدا نشد",
+        en: "Address not found",
+        status: 404,
+    },
+    noChangesDetected: {
+        fa: "هیچ تغییری در آدرس یافت نشد",
+        en: "No changes detected in the address",
+        status: 400,
+    },
+    postalCodeRequired: {
+        fa: "وارد کردن کد پستی الزامی است.",
+        en: "Postal code is required.",
+        status: 400
+    },
+    typeAddressRequired: {
+        fa: "نوع آدرس الزامی است.",
+        en: "Address type is required.",
+        status: 400
+    },
+    addressRequired: {
+        fa: "وارد کردن آدرس الزامی است.",
+        en: "Address is required.",
+        status: 400
+    },
+    cityIdRequired: {
+        fa: "وارد کردن شناسه شهر الزامی است.",
+        en: "City ID is required.",
+        status: 400
+    },
+    locationLatRequired: {
+        fa: "وارد کردن عرض جغرافیایی الزامی است.",
+        en: "Latitude is required.",
+        status: 400
+    },
+    locationLngRequired: {
+        fa: "وارد کردن طول جغرافیایی الزامی است.",
+        en: "Longitude is required.",
+        status: 400
+    },
+    invalidCityId: {
+        fa: "شناسه شهر نامعتبر است.",
+        en: "Invalid city ID.",
+        status: 400
+    },
+    invalidAddress: {
+        fa: "آدرس وارد شده نامعتبر است.",
+        en: "Invalid address.",
+        status: 400
+    },
+    addressTooShort: {
+        fa: "آدرس وارد شده خیلی کوتاه است.",
+        en: "Address is too short.",
+        status: 400
+    },
+    invalidLocation: {
+        fa: "موقعیت جغرافیایی نامعتبر است.",
+        en: "Invalid location.",
+        status: 400
+    },
+    invalidLatitude: {
+        fa: "عرض جغرافیایی وارد شده نامعتبر است.",
+        en: "Invalid latitude value.",
+        status: 400
+    },
+    invalidLongitude: {
+        fa: "طول جغرافیایی وارد شده نامعتبر است.",
+        en: "Invalid longitude value.",
+        status: 400
+    },
+    invalidPostalCode: {
+        fa: "کد پستی وارد شده نامعتبر است.",
+        en: "Invalid postal code.",
+        status: 400
+    },
+    postalCodeInvalidLength: {
+        fa: "کد پستی باید 10 رقم باشد.",
+        en: "Postal code must be 10 digits.",
+        status: 400
+    },
+    invalidAddressType: {
+        fa: "نوع آدرس وارد شده نامعتبر است. فقط 'home'، 'work' یا 'other' مجاز است.",
+        en: "Invalid address type. Only 'home', 'work' or 'other' are allowed.",
+        status: 400
+    },
     invalidCaptcha: {
         fa: "کپچا نامعتبر است",
         en: "Invalid captcha",

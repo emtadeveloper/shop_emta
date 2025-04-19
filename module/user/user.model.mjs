@@ -12,15 +12,15 @@ const addressSchema = new mongoose.Schema({
     },
     address: { type: String, required: true },
     cityId: { type: Number, required: true }
-}, { _id: false });
+});
 
 const userSchema = new mongoose.Schema({
     phone: { type: String, required: true, unique: true },
     username: { type: String, required: true, unique: true, trim: true },
     email: { type: String, required: true, unique: true, trim: true },
     password: { type: String, required: true },
-    firstName: { type: String },
-    lastName: { type: String },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
     googleId: { type: String, default: null },
     addresses: { type: [addressSchema] },
     role: {

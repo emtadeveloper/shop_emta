@@ -10,81 +10,96 @@ import jwt from "jsonwebtoken";
 import redis from "../../config/db/db.redis.mjs";
 
 export const registerUser = async (userData) => {
-    const { email, username } = userData;
-    const exists = await UserModel.findOne({ $or: [{ email }, { username }] });
+    try {
+        const { email, username } = userData;
+        const exists = await UserModel.findOne({ $or: [{ email }, { username }] });
 
-    if (exists) {
-        throw createLocalizedError("userAlreadyExists");
-    }
+        if (exists) {
+            throw createLocalizedError("userAlreadyExists");
+        }
 
-    const userCount = await UserModel.countDocuments();
+        const userCount = await UserModel.countDocuments();
 
-    if (userCount === 0) {
-        const roles = await RoleModel.findOne({ roleName: "admin" });
+        if (userCount === 0) {
+            const roles = await RoleModel.findOne({ roleName: "ADMIN" });
+            const createUser = await UserModel.create({ ...userData, role: roles._id });
+            return createUser.toObject();
+        }
+
+        const roles = await RoleModel.findOne({ roleName: "USER" });
         const createUser = await UserModel.create({ ...userData, role: roles._id });
         return createUser.toObject();
+    } catch (error) {
+        throw error
     }
-
-    const roles = await RoleModel.findOne({ roleName: "user" });
-    const createUser = await UserModel.create({ ...userData, role: roles._id });
-    return createUser.toObject();
 
 };
 
 export const loginUser = async (userData) => {
-    const accessToken = await generateAccessToken(userData)
-    const refreshToken = await generateRefreshToken(userData)
-    return { accessToken, refreshToken }
+    try {
+        const accessToken = await generateAccessToken(userData)
+        const refreshToken = await generateRefreshToken(userData)
+        return { accessToken, refreshToken }
+    } catch (error) {
+        throw error
+    }
 };
 
 export const sendOtpUser = async (userData) => {
-    const { identifier } = userData
-    console.log(identifier);
-    const query = identifier.includes('@') ? { email: identifier } : { username: identifier };
-    const exists = await UserModel.findOne(query)
+    try {
+        const { identifier } = userData
+        console.log(identifier);
+        const query = identifier.includes('@') ? { email: identifier } : { username: identifier };
+        const exists = await UserModel.findOne(query)
 
-    if (!exists) {
-        throw createLocalizedError("userNotFound");
+        if (!exists) {
+            throw createLocalizedError("userNotFound");
+        }
+
+        const otpSecret = speakeasy.totp({
+            secret: speakeasy.generateSecret().base32,
+            encoding: 'base32',
+            digits: 6
+        });
+
+        await saveOtp(exists._id, otpSecret)
+
+        identifier.includes('@')
+            ? await sendMail(exists.email, "Your OTP Code", `Your OTP code is: ${otpSecret}`)
+            : await sendSms({ toNum: exists.phone, code: otpSecret });
+
+        return { otpSecret };
+    } catch (error) {
+        throw error
     }
-
-    const otpSecret = speakeasy.totp({
-        secret: speakeasy.generateSecret().base32,
-        encoding: 'base32',
-        digits: 6
-    });
-
-    await saveOtp(exists._id, otpSecret)
-
-    identifier.includes('@')
-        ? await sendMail(exists.email, "Your OTP Code", `Your OTP code is: ${otpSecret}`)
-        : await sendSms({ toNum: exists.phone, code: otpSecret });
-
-    return { otpSecret };
 }
 
 export const refreshTokenUser = async (token) => {
+    try {
+        const payload = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET_KET);
+        const existUser = await UserModel.findOne({ id: payload._id })
 
-    const payload = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET_KET);
-    const existUser = await UserModel.findOne({ id: payload._id })
+        if (!existUser) {
+            throw createLocalizedError("userNotFound");
+        }
 
-    if (!existUser) {
-        throw createLocalizedError("userNotFound");
+        const savedToken = await redis.get(`refresh:${existUser._id}`);
+
+        if (!savedToken) {
+            throw createLocalizedError("refreshTokenExpire");
+        }
+
+        if (token !== savedToken) {
+            throw createLocalizedError("InvalidrefreshToken");
+        }
+
+        const accessToken = await generateAccessToken(existUser)
+        const refreshToken = await generateRefreshToken(existUser)
+
+        return { accessToken, refreshToken }
+    } catch (error) {
+        throw error
     }
-
-    const savedToken = await redis.get(`refresh:${existUser._id}`);
-
-    if (!savedToken) {
-        throw createLocalizedError("refreshTokenExpire");
-    }
-
-    if (token !== savedToken) {
-        throw createLocalizedError("InvalidrefreshToken");
-    }
-
-    const accessToken = await generateAccessToken(existUser)
-    const refreshToken = await generateRefreshToken(existUser)
-
-    return { accessToken, refreshToken }
 
 }
 

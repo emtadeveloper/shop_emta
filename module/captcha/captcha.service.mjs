@@ -11,6 +11,7 @@ export const storeCaptcha = async (key, text) => {
         await saveCaptcha(key, text);
         throw createLocalizedError("captchaStoreError");
     } catch (error) {
+        throw error
     }
 };
 
