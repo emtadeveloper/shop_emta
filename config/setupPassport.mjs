@@ -32,7 +32,7 @@ export default (passport) => {
                 await deleteCaptcha(captchaKey);
 
                 const query = login.includes('@') ? { email: login } : { username: login };
-                const user = await UserModel.findOne(query).populate("role")
+                const user = await UserModel.findOne(query)
 
                 if (!user) {
                     return done(null, false, 'userNotFound');
@@ -70,7 +70,7 @@ export default (passport) => {
                 }
 
                 const query = identifier.includes('@') ? { email: identifier } : { username: identifier };
-                const user = await UserModel.findOne(query).populate("role")
+                const user = await UserModel.findOne(query)
 
                 if (!user) {
                     return done(null, false, 'userNotFound');

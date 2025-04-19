@@ -1,4 +1,5 @@
-import { mongoose } from "mongoose";
+import mongoose from "mongoose";
+import autopopulate from "mongoose-autopopulate";
 import { hashPasswordBcrypt, comparePasswordBcrypt } from "../../common/util/password.mjs";
 import { createLocalizedError } from "../../common/locale/localizationHelper.mjs";
 
@@ -11,62 +12,68 @@ const addressSchema = new mongoose.Schema({
     },
     address: { type: String, required: true },
     cityId: { type: Number, required: true }
-},
-    { _id: false }
-);
+}, { _id: false });
 
 const userSchema = new mongoose.Schema({
     phone: { type: String, required: true, unique: true },
-    username: { type: String, required: true },
-    email: { type: String, required: true },
+    username: { type: String, required: true, unique: true, trim: true },
+    email: { type: String, required: true, unique: true, trim: true },
     password: { type: String, required: true },
     firstName: { type: String },
     lastName: { type: String },
     googleId: { type: String, default: null },
     addresses: { type: [addressSchema] },
-    role: { type: mongoose.Types.ObjectId, ref: "Role" },
+    role: {
+        type: mongoose.Types.ObjectId,
+        ref: "Role",
+        autopopulate: true,
+        autopopulate: { select: "-_id" }
+    }
 }, {
     timestamps: true,
     versionKey: false,
     toJSON: {
-        transform: function (doc, ret) {
+        transform(doc, ret) {
             delete ret.password;
+            delete ret.googleId;
+            return ret;
         }
     },
     toObject: {
-        transform: function (doc, ret) {
+        transform(doc, ret) {
             delete ret.password;
+            delete ret.googleId;
+            return ret;
         }
     }
 });
 
+userSchema.plugin(autopopulate);
+
 userSchema.pre("save", async function (next) {
-    const user = this;
-    if (!user.isModified("password")) return next();
+    if (!this.isModified("password")) return next();
     try {
-        user.password = await hashPasswordBcrypt(user.password);
+        this.password = await hashPasswordBcrypt(this.password);
         next();
-    } catch (error) {
-        throw createLocalizedError("passwordWeak")
+    } catch (err) {
+        next(createLocalizedError("passwordWeak"));
     }
 });
 
 userSchema.post("save", function (error, doc, next) {
     if (error.code === 11000) {
-        if (error.message.includes("phone")) {
-            throw createLocalizedError("phoneAlreadyExists")
-        } else if (error.message.includes("email")) {
-            throw createLocalizedError("emailAlreadyExists")
-        } else if (error.message.includes("username")) {
-            throw createLocalizedError("usernameAlreadyExists")
+        const field = Object.keys(error.keyValue)[0];
+        switch (field) {
+            case "phone": return next(createLocalizedError("phoneAlreadyExists"));
+            case "email": return next(createLocalizedError("emailAlreadyExists"));
+            case "username": return next(createLocalizedError("usernameAlreadyExists"));
         }
-    } else {
-        next(error);
     }
+    next(error);
 });
 
-userSchema.methods.comparePassword = async function (candidatePassword) {
-    return await comparePasswordBcrypt(candidatePassword, this.password);
+userSchema.methods.comparePassword = function (candidatePassword) {
+    return comparePasswordBcrypt(candidatePassword, this.password);
 };
 
 export default mongoose.model("User", userSchema);

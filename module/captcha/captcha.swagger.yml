@@ -16,16 +16,7 @@ paths:
         "200":
           description: Successfully generated captcha image
           content:
-            application/json:
+            image/svg+xml:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  data:
-                    type: object
-                    properties:
-                      captcha:
-                        type: string
-                        example: "<svg xmlns='http://www.w3.org/2000/svg'>...</svg>"
+                type: string
+                example: "<svg xmlns='http://www.w3.org/2000/svg' width='120' height='40'><text x='10' y='25' font-size='20'>AB12</text></svg>"

@@ -21,7 +21,7 @@ const Auth = async (req, res, next) => {
             });
         });
 
-        const user = await UserModel.findOne({ _id: payload.id }).populate("role");
+        const user = await UserModel.findOne({ _id: payload.id })
 
         if (!user) {
             throw createLocalizedError("userNotFound");

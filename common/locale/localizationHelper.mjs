@@ -21,9 +21,8 @@ export const createLocalizedError = (key) => {
 
 
 class LocalizedSuccess {
-    constructor({ fa, en, status = StatusCodes.OK }, data = null) {
-        this.message = { fa, en };
-        this.status = status;
+    constructor({ fa, en, status }, data = null) {
+        this.message = { fa, en, status };
         this.data = data;
     }
 
@@ -37,7 +36,7 @@ class LocalizedSuccess {
             response.data = this.data;
         }
 
-        return res.status(this.status).json(response);
+        return res.status(this.message.status).json(response);
     }
 }
 

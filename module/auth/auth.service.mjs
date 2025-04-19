@@ -65,7 +65,7 @@ export const sendOtpUser = async (userData) => {
 export const refreshTokenUser = async (token) => {
 
     const payload = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET_KET);
-    const existUser = await UserModel.findOne({ id: payload._id }).populate("role")
+    const existUser = await UserModel.findOne({ id: payload._id })
 
     if (!existUser) {
         throw createLocalizedError("userNotFound");
