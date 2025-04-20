@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import autopopulate from "mongoose-autopopulate";
 import { hashPasswordBcrypt, comparePasswordBcrypt } from "../../common/util/password.mjs";
 import { createLocalizedError } from "../../common/locale/localizationHelper.mjs";
+import { generateResetToken } from "../../common/util/token.mjs";
 
 const addressSchema = new mongoose.Schema({
     type: { type: String, enum: ["home", "work", "other"], default: "home" },
@@ -23,6 +24,8 @@ const userSchema = new mongoose.Schema({
     lastName: { type: String, required: true },
     googleId: { type: String, default: null },
     addresses: { type: [addressSchema] },
+    resetPasswordToken: { type: String, default: null },
+    resetPasswordExpire: { type: Date, default: null },
     role: {
         type: mongoose.Types.ObjectId,
         ref: "Role",
@@ -75,5 +78,15 @@ userSchema.post("save", function (error, doc, next) {
 userSchema.methods.comparePassword = function (candidatePassword) {
     return comparePasswordBcrypt(candidatePassword, this.password);
 };
+
+userSchema.methods.generateResetPasswordToken = async function () {
+    const { rawToken, hashedToken, expireTime } = await generateResetToken();
+
+    this.resetPasswordToken = hashedToken;
+    this.resetPasswordExpire = expireTime;
+
+    return rawToken;
+};
+
 
 export default mongoose.model("User", userSchema);

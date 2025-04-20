@@ -112,3 +112,26 @@ export const refreshTokenValidationSchema = yup.object({
         .trim()
         .required(messages.refreshTokenRequired)
 });
+
+export const resetPasswordTokenValidationSchema = yup.object({
+    email: yup
+        .string()
+        .trim()
+        .lowercase()
+        .email(messages.invalidEmail)
+        .required(messages.emailRequired),
+});
+
+export const resetPasswordBodyValidationSchema = yup.object({
+    newPassword: yup
+        .string()
+        .min(6, messages.passwordMinLength)
+        .required(messages.passwordRequired)
+});
+
+export const resetPasswordParamsValidationSchema = yup.object({
+    token: yup
+        .string()
+        .trim()
+        .required(messages.tokenRequired)
+});

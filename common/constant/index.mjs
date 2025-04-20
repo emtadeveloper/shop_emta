@@ -15,4 +15,12 @@ export default {
         USER: [1, 2, 3],
         ADMIN: [1, 2, 3, 4, 5, 6,],
     }),
+
+    TemplateResetPassword(resetUrl) {
+        return `
+        <p>برای تغییر رمز عبور، روی لینک زیر کلیک کنید:</p>
+        <a href="${resetUrl}" style="color: #007bff;">تغییر رمز عبور</a>
+        <p>این لینک تا ۱۰ دقیقه معتبر است.</p>
+        `;
+    }
 } 

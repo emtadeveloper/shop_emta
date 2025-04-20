@@ -1,5 +1,10 @@
 import { createLocalizedSuccess, createLocalizedError } from "../../common/locale/localizationHelper.mjs"
-import { registerValidationSchema, loginValidationSchema, sendOtpValidationSchema, otpValidationSchema, refreshTokenValidationSchema } from "./auth.validator.mjs"
+import {
+    registerValidationSchema, loginValidationSchema, sendOtpValidationSchema,
+    otpValidationSchema, refreshTokenValidationSchema, resetPasswordTokenValidationSchema,
+    resetPasswordParamsValidationSchema,
+    resetPasswordBodyValidationSchema
+} from "./auth.validator.mjs"
 import authService from "./auth.service.mjs"
 import passport from "passport";
 
@@ -20,10 +25,10 @@ export const login = async (req, res, next) => {
     passport.authenticate('local-login', async (err, user, info) => {
 
         if (info) {
-            next(createLocalizedError(info))
+            return next(createLocalizedError(info))
         }
-
         try {
+
             const data = await authService.loginUser(user)
             return createLocalizedSuccess(res, 'LoginSuccess', data);
         } catch (error) {
@@ -73,6 +78,38 @@ export const refreshToken = async (req, res, next) => {
         next(error)
     }
 }
+
+export const forgotPassword = async (req, res, next) => {
+    try {
+        await resetPasswordTokenValidationSchema.validate(req.body);
+
+        const data = await authService.forgotPasswordUser(req.body.email);
+
+        return createLocalizedSuccess(res, 'resetPasswordSuccess', data);
+
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const resetPassword = async (req, res, next) => {
+    try {
+
+        await resetPasswordParamsValidationSchema.validate(req.params, { abortEarly: false });
+
+        await resetPasswordBodyValidationSchema.validate(req.body, { abortEarly: false });
+
+        const { token } = req.params;
+        const { newPassword } = req.body;
+
+        await authService.resetPasswordUser(token, newPassword);
+
+        return createLocalizedSuccess(res, 'formgetPasswordSuccess');
+
+    } catch (error) {
+        next(error);
+    }
+};
 
 export const me = async (req, res, next) => {
     try {

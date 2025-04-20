@@ -8,6 +8,8 @@ import sendSms from "../../common/util/smsSender.mjs"
 import sendMail from "../../common/util/mailer.mjs"
 import jwt from "jsonwebtoken";
 import redis from "../../config/db/db.redis.mjs";
+import constants from "../../common/constant/index.mjs";
+import { comparePasswordBcrypt, hashPasswordBcrypt } from "../../common/util/password.mjs";
 
 export const registerUser = async (userData) => {
     try {
@@ -103,4 +105,50 @@ export const refreshTokenUser = async (token) => {
 
 }
 
-export default { registerUser, loginUser, sendOtpUser, refreshTokenUser }
+export const forgotPasswordUser = async (email) => {
+    const user = await UserModel.findOne({ email });
+
+    if (!user) throw createLocalizedError("userNotFound");
+
+    const resetToken = await user.generateResetPasswordToken();
+
+    await user.save({ validateBeforeSave: false });
+
+    const resetUrl = `${process.env.CLIENT_BASE_URL}/api/v1/auth/reset-password/${resetToken}`;
+
+    await sendMail(user.email, "درخواست بازیابی رمز عبور", constants.TemplateResetPassword(resetUrl));
+
+    return resetToken
+};
+
+export const resetPasswordUser = async (token, newPassword) => {
+
+    try {
+        const user = await UserModel.findOne({
+            resetPasswordToken: { $exists: true },
+            resetPasswordExpire: { $gt: Date.now() },
+        });
+
+        if (!user || !(await comparePasswordBcrypt(token, user.resetPasswordToken))) {
+            throw createLocalizedError('invalidOrExpiredToken');
+        }
+
+        const hashedPassword = await hashPasswordBcrypt(newPassword);
+
+        await UserModel.findOneAndUpdate(
+            { _id: user._id },
+            {
+                $set: { password: hashedPassword },
+                $unset: { resetPasswordToken: '', resetPasswordExpire: '' }
+            },
+            { new: true }
+        );
+
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+
+export default { registerUser, loginUser, sendOtpUser, refreshTokenUser, forgotPasswordUser, resetPasswordUser }

@@ -2,7 +2,7 @@
   get:
     summary: Retrieve all user addresses
     tags:
-      - User Address
+      - User 
     description: Get the list of all addresses saved for the authenticated user
     responses:
       200:
@@ -62,7 +62,7 @@
   post:
     summary: Create a new user address
     tags:
-      - User Address
+      - User 
     description: Create a new address for the user
     requestBody:
       required: true
@@ -149,7 +149,7 @@
   get:
     summary: Retrieve a specific user address
     tags:
-      - User Address
+      - User 
     description: Get the details of a single address by its ID
     parameters:
       - name: id
@@ -211,7 +211,7 @@
   put:
     summary: Update a specific user address
     tags:
-      - User Address
+      - User 
     description: Update the information of a specific address based on its ID
     parameters:
       - name: id
@@ -304,7 +304,7 @@
   delete:
     summary: Delete a specific user address
     tags:
-      - User Address
+      - User 
     description: Delete a specific address based on its ID
     parameters:
       - name: id

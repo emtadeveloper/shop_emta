@@ -424,9 +424,30 @@ export const messages = {
         fa: "حساب کاربری جهت ورود شناسایی نشد لطفا وارد حساب کاربری خود شوید",
         status: 401
     },
+    resetPasswordSuccess: {
+        fa: "لینک بازنشانی رمز عبور با موفقیت ارسال شد",
+        en: "Password reset link sent successfully",
+        status: 200
+    },
+    formgetPasswordSuccess: {
+        fa: "رمز عبور با موفقیت تغیر کرد",
+        en: "Password changed successfully",
+        status: 200
+    },
     success: {
         fa: "با موفقیت دریافت شد",
         en: "success recived data",
         status: 200
+    },
+    invalidOrExpiredToken: {
+        fa: "توکن نامعتبر است یا منقضی شده است",
+        en: "The token is invalid or has expired",
+        status: 400
+    },
+    tokenRequired: {
+        fa: "توکن الزامی است",
+        en: "Token is required",
+        status: 400
     }
+
 };

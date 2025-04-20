@@ -9,9 +9,8 @@ export const generateCaptchaSvg = () => {
 export const storeCaptcha = async (key, text) => {
     try {
         await saveCaptcha(key, text);
-        throw createLocalizedError("captchaStoreError");
     } catch (error) {
-        throw error
+        throw createLocalizedError("captchaStoreError");
     }
 };
 

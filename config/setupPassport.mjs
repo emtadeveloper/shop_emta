@@ -19,8 +19,8 @@ export default (passport) => {
                 if (!captchaResponse || !captchaKey) {
                     return done(null, false, 'captchaRequired');
                 }
-
                 const storedCaptcha = await getCaptcha(captchaKey);
+                console.log(captchaResponse, captchaKey, storedCaptcha);
                 if (!storedCaptcha) {
                     return done(null, false, 'captchaNotFound');
                 }

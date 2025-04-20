@@ -387,3 +387,110 @@
                       type: string
                       format: date-time
                       example: "2025-04-19T04:41:49.867Z"
+
+/api/v1/auth/forgot-password:
+  post:
+    summary: Reset user password
+    tags:
+      - Auth
+    description: Sends a password reset link to the user by validating the provided email.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - email
+            properties:
+              email:
+                type: string
+                format: email
+                description: The email of the user that needs to reset the password.
+                example: "user@example.com"
+    responses:
+      200:
+        description: Password reset link sent successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: object
+                  properties:
+                    fa:
+                      type: string
+                      example: "لینک بازنشانی رمز عبور با موفقیت ارسال شد"
+                    en:
+                      type: string
+                      example: "Password reset link sent successfully"
+                    status:
+                      type: integer
+                      example: 200
+                data:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      example: "user@example.com"
+
+/api/v1/auth/reset-password/{token}:
+  post:
+    summary: Reset user password
+    tags:
+      - Auth
+    description: Sends a password reset link to the user by validating the provided email.
+    parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the address to retrieve
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - email
+            properties:
+              newPassword:
+                type: string
+                format: newPassword
+                description: The password is required.
+                example: "123*****3"
+    responses:
+      200:
+        description: Password reset link sent successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: object
+                  properties:
+                    fa:
+                      type: string
+                      example: "لینک بازنشانی رمز عبور با موفقیت ارسال شد"
+                    en:
+                      type: string
+                      example: "Password reset link sent successfully"
+                    status:
+                      type: integer
+                      example: 200
+                data:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      example: "user@example.com"
