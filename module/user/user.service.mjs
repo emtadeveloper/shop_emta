@@ -14,7 +14,6 @@ export const createAddress = async (addressData, userId) => {
             {
                 new: true,
                 runValidators: true,
-                projection: { addresses: 1 }
             }
         );
 
@@ -22,7 +21,7 @@ export const createAddress = async (addressData, userId) => {
             throw createLocalizedError("userNotFound");
         }
 
-        return updateResult
+        return updateResult.toObject()
     } catch (error) {
         throw error
     }
@@ -94,4 +93,58 @@ export const deleteAddress = async (userId, addressId) => {
     }
 };
 
-export default { createAddress, updateAddress, deleteAddress }
+export const getAddress = async (userId, addressId) => {
+    try {
+        const result = await UserModel.findOne(
+            { _id: userId, "addresses._id": addressId },
+            { "addresses.$": 1 }
+        );
+        if (!result || !result.addresses.length) {
+            throw createLocalizedError("addressNotFound");
+        }
+        return result.addresses[0].toObject();
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getAllAddress = async (userId) => {
+    try {
+        const user = await UserModel.findById(userId, { addresses: 1 });
+
+        if (!user) throw createLocalizedError("userNotFound");
+
+        return user.addresses
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const updateUser = async (oldData, newData) => {
+    try {
+        const updatedFields = createUpdateFields(oldData.toObject(), newData);
+        if (Object.keys(updatedFields).length === 0) {
+            throw createLocalizedError("invalidUpdateData");
+        }
+
+        const updatedUser = await UserModel.findByIdAndUpdate(
+            oldData._id,
+            { $set: updatedFields },
+            {
+                new: true,
+                runValidators: true,
+                projection: { password: 0 }
+            }
+        );
+
+        if (!updatedUser) {
+            throw createLocalizedError("profileUpdateError");
+        }
+
+        return updatedUser.toObject();
+    } catch (error) {
+        throw error;
+    }
+};
+
+export default { createAddress, updateAddress, deleteAddress, updateUser, getAddress, getAllAddress }

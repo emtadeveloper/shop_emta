@@ -1,4 +1,64 @@
 /api/v1/user/address:
+  get:
+    summary: Retrieve all user addresses
+    tags:
+      - User Address
+    description: Get the list of all addresses saved for the authenticated user
+    responses:
+      200:
+        description: Addresses retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: object
+                  properties:
+                    fa:
+                      type: string
+                      example: "آدرس‌ها با موفقیت بازیابی شدند"
+                    en:
+                      type: string
+                      example: "Addresses retrieved successfully"
+                    status:
+                      type: integer
+                      example: 200
+                data:
+                  type: object
+                  properties:
+                    addresses:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          _id:
+                            type: string
+                            example: "60d0fe4f5311236168a109cb"
+                          type:
+                            type: string
+                            example: "home"
+                          postalCode:
+                            type: string
+                            example: "9876543210"
+                          address:
+                            type: string
+                            example: "Boulevard Kashavarz, No. 50"
+                          cityId:
+                            type: integer
+                            example: 110
+                          location:
+                            type: object
+                            properties:
+                              lat:
+                                type: number
+                                example: 36.1234
+                              lng:
+                                type: number
+                                example: 52.4567
   post:
     summary: Create a new user address
     tags:
@@ -86,6 +146,68 @@
                                 type: number
                                 example: 52.4567
 /api/v1/user/address/{id}:
+  get:
+    summary: Retrieve a specific user address
+    tags:
+      - User Address
+    description: Get the details of a single address by its ID
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the address to retrieve
+    responses:
+      200:
+        description: Address retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: object
+                  properties:
+                    fa:
+                      type: string
+                      example: "آدرس با موفقیت بازیابی شد"
+                    en:
+                      type: string
+                      example: "Address retrieved successfully"
+                    status:
+                      type: integer
+                      example: 200
+                data:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      example: "60d0fe4f5311236168a109cb"
+                    type:
+                      type: string
+                      example: "work"
+                    postalCode:
+                      type: string
+                      example: "9876543210"
+                    address:
+                      type: string
+                      example: "Boulevard Kashavarz, No. 50"
+                    cityId:
+                      type: integer
+                      example: 110
+                    location:
+                      type: object
+                      properties:
+                        lat:
+                          type: number
+                          example: 36.1234
+                        lng:
+                          type: number
+                          example: 52.4567
   put:
     summary: Update a specific user address
     tags:
@@ -211,6 +333,131 @@
                     en:
                       type: string
                       example: "Address deleted successfully"
+                    status:
+                      type: integer
+                      example: 200
+
+/api/v1/user:
+  put:
+    summary: Update user profile
+    tags:
+      - User
+    description: Update one or more fields in the user’s profile
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              firstName:
+                type: string
+                example: "علی"
+              lastName:
+                type: string
+                example: "رضایی"
+              phone:
+                type: string
+                pattern: '^09\\d{9}$'
+                example: "09123456789"
+              email:
+                type: string
+                format: email
+                example: "ali.rezaei@example.com"
+              username:
+                type: string
+                minLength: 3
+                example: "alirezaei"
+    responses:
+      200:
+        description: Profile updated successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: object
+                  properties:
+                    fa:
+                      type: string
+                      example: "پروفایل با موفقیت به‌روزرسانی شد"
+                    en:
+                      type: string
+                      example: "Profile updated successfully"
+                    status:
+                      type: integer
+                      example: 200
+                data:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      example: "60d0fe4f5311236168a109ca"
+                    firstName:
+                      type: string
+                      example: "علی"
+                    lastName:
+                      type: string
+                      example: "رضایی"
+                    phone:
+                      type: string
+                      example: "09123456789"
+                    email:
+                      type: string
+                      example: "ali.rezaei@example.com"
+                    username:
+                      type: string
+                      example: "alirezaei"
+
+/api/v1/user/password:
+  put:
+    summary: Change user password
+    tags:
+      - User
+    description: Update the current password to a new password
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              currentPassword:
+                type: string
+                minLength: 6
+                example: "oldPass123"
+              newPassword:
+                type: string
+                minLength: 6
+                example: "newPass456"
+              confirmNewPassword:
+                type: string
+                minLength: 6
+                example: "newPass456"
+    responses:
+      200:
+        description: Password updated successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: object
+                  properties:
+                    fa:
+                      type: string
+                      example: "گذرواژه با موفقیت به‌روزرسانی شد"
+                    en:
+                      type: string
+                      example: "Password updated successfully"
                     status:
                       type: integer
                       example: 200

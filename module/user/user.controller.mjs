@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 import { createLocalizedError, createLocalizedSuccess } from "../../common/locale/localizationHelper.mjs";
-import service from "./user.service.mjs";
-import { createAddressValidation, updateAddressValidation } from "./user.validator.mjs";
+import userService from "./user.service.mjs";
+import { createAddressValidation, updateAddressValidation, updateProfileValidationSchema } from "./user.validator.mjs";
 
 export const createAddressController = async (req, res, next) => {
     try {
 
         await createAddressValidation.validate(req.body)
 
-        const data = await service.createAddress(req.body, req.user._id);
+        const data = await userService.createAddress(req.body, req.user._id);
 
         return createLocalizedSuccess(res, 'successCreateAddress', data);
 
@@ -28,7 +28,7 @@ export const updateAddressController = async (req, res, next) => {
 
         await updateAddressValidation.validate(req.body)
 
-        const data = await service.updateAddress(req.user._id, id, req.body);
+        const data = await userService.updateAddress(req.user._id, id, req.body);
 
 
         return createLocalizedSuccess(res, 'successUpdateAddress', data);
@@ -47,11 +47,58 @@ export const deleteAddressController = async (req, res, next) => {
             throw createLocalizedError("invalidUserId");
         }
 
-        await service.deleteAddress(req.user._id, id);
+        await userService.deleteAddress(req.user._id, id);
 
         return createLocalizedSuccess(res, 'successDeleteAddress');
 
     } catch (error) {
         next(next)
+    }
+}
+
+export const getAddressController = async (req, res, next) => {
+    try {
+
+        const { id } = req.params
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            throw createLocalizedError("invalidUserId");
+        }
+
+        const data = await userService.getAddress(req.user._id, id)
+
+        return createLocalizedSuccess(res, 'success', data);
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getAllAddressController = async (req, res, next) => {
+    try {
+
+        const data = await userService.getAllAddress(req.user._id)
+
+        return createLocalizedSuccess(res, 'success', data);
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const updateUserController = async (req, res, next) => {
+    try {
+
+        const newData = req.body
+        const oldData = req.user
+
+        await updateProfileValidationSchema.validate(newData)
+
+        const { _id, ...data } = await userService.updateUser(oldData, newData);
+
+        return createLocalizedSuccess(res, 'successUpdateProfile', data);
+
+    } catch (error) {
+        next(error)
     }
 }

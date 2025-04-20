@@ -76,7 +76,6 @@ export const refreshToken = async (req, res, next) => {
 
 export const me = async (req, res, next) => {
     try {
-        console.log(req.user);
         return createLocalizedSuccess(res, "success", req.user);
     } catch (error) {
         next(error)

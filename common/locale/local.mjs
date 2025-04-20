@@ -1,4 +1,59 @@
 export const messages = {
+    profileNotFound: {
+        fa: "کاربر مورد نظر پیدا نشد",
+        en: "User not found",
+        status: 404,
+    },
+    invalidUpdateData: {
+        fa: "داده‌های ارسال شده برای به‌روزرسانی نامعتبر است",
+        en: "Invalid data for update",
+        status: 400,
+    },
+    profileUpdateError: {
+        fa: "خطا در به‌روزرسانی پروفایل",
+        en: "Error updating profile",
+        status: 500,
+    },
+    successUpdateProfile: {
+        fa: "پروفایل با موفقیت به‌روزرسانی شد",
+        en: "Profile updated successfully",
+        status: 200,
+    },
+    currentPasswordRequired: {
+        fa: "وارد کردن گذرواژه فعلی الزامی است",
+        en: "Current password is required",
+        status: 400,
+    },
+    newPasswordRequired: {
+        fa: "وارد کردن گذرواژه جدید الزامی است",
+        en: "New password is required",
+        status: 400,
+    },
+    confirmPasswordRequired: {
+        fa: "تأیید گذرواژه جدید الزامی است",
+        en: "Please confirm your new password",
+        status: 400,
+    },
+    passwordsMustMatch: {
+        fa: "گذرواژه جدید و تأیید آن باید یکسان باشند",
+        en: "New password and its confirmation must match",
+        status: 400,
+    },
+    invalidCurrentPassword: {
+        fa: "گذرواژه فعلی اشتباه است",
+        en: "Current password is incorrect",
+        status: 401,
+    },
+    passwordUpdateError: {
+        fa: "خطا در به‌روزرسانی گذرواژه",
+        en: "Error updating password",
+        status: 500,
+    },
+    successUpdatePassword: {
+        fa: "گذرواژه با موفقیت به‌روزرسانی شد",
+        en: "Password updated successfully",
+        status: 200,
+    },
     captchaStoreError: {
         fa: "خطا در ذخیره‌سازی کپچا",
         en: "Error storing captcha",

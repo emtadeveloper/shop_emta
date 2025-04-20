@@ -35,7 +35,6 @@ export const createAddressValidation = yup.object({
     })
 });
 
-
 export const updateAddressValidation = yup.object({
     type: yup
         .string()
@@ -69,3 +68,50 @@ export const updateAddressValidation = yup.object({
             .notRequired(),
     }).notRequired()
 });
+
+export const updateProfileValidationSchema = yup.object({
+    firstName: yup
+        .string()
+        .trim(),
+
+    lastName: yup
+        .string()
+        .trim(),
+
+    phone: yup
+        .string()
+        .trim()
+        .matches(/^09\d{9}$/, messages.invalidPhone),
+
+    email: yup
+        .string()
+        .trim()
+        .lowercase()
+        .email(messages.invalidEmail),
+
+    username: yup
+        .string()
+        .trim()
+        .min(3, messages.usernameMinLength),
+}).noUnknown().test(
+    'at-least-one',
+    messages.updateAtLeastOne,
+    value => value && Object.keys(value).length > 0
+);
+
+export const updatePasswordValidationSchema = yup.object({
+    currentPassword: yup
+        .string()
+        .required(messages.currentPasswordRequired)
+        .min(6, messages.passwordMinLength),
+
+    newPassword: yup
+        .string()
+        .required(messages.newPasswordRequired)
+        .min(6, messages.passwordMinLength),
+
+    confirmNewPassword: yup
+        .string()
+        .required(messages.confirmPasswordRequired)
+        .oneOf([yup.ref('newPassword')], messages.passwordsMustMatch),
+}).noUnknown();
