@@ -1,0 +1,101 @@
+components:
+  schemas:
+    Province:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "آذربایجان شرقی"
+        slug:
+          type: string
+          example: "آذربایجان-شرقی"
+
+    City:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        name:
+          type: string
+          example: "اهر"
+        slug:
+          type: string
+          example: "اهر"
+        popular:
+          type: boolean
+          example: false
+        province_id:
+          type: integer
+          example: 1
+
+/api/v1/locations/provinces:
+  get:
+    tags:
+      - Location
+    summary: دریافت لیست استان‌ها
+    description: این روت لیست کامل استان‌ها را از فایل `provinces.json` بازیابی می‌کند.
+    responses:
+      200:
+        description: Provinces fetched successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: object
+                  properties:
+                    fa:
+                      type: string
+                      example: "لیست استان‌ها با موفقیت دریافت شد"
+                    en:
+                      type: string
+                      example: "Provinces fetched successfully"
+                    status:
+                      type: integer
+                      example: 200
+                data:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Province"
+
+/api/v1/locations/cities:
+  get:
+    tags:
+      - Location
+    summary: دریافت لیست شهرها
+    description: این روت لیست کامل شهرها را از فایل `cities.json` بازیابی می‌کند.
+    responses:
+      200:
+        description: Cities fetched successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: object
+                  properties:
+                    fa:
+                      type: string
+                      example: "لیست شهرها با موفقیت دریافت شد"
+                    en:
+                      type: string
+                      example: "Cities fetched successfully"
+                    status:
+                      type: integer
+                      example: 200
+                data:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/City"

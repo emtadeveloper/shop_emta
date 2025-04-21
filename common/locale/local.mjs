@@ -14,6 +14,46 @@ export const messages = {
         en: "Theme not found",
         status: 404,
     },
+    readFileError: {
+        fa: 'خطا در خواندن فایل اطلاعات',
+        en: 'Error reading data file',
+        status: 500
+    },
+    invalidJsonFormat: {
+        fa: 'ساختار JSON نامعتبر است',
+        en: 'Invalid JSON format',
+        status: 500
+    },
+    successFetchProvinces: {
+        fa: 'لیست استان‌ها با موفقیت دریافت شد',
+        en: 'Provinces fetched successfully',
+        status: 200
+    },
+    successFetchCities: {
+        fa: 'لیست شهرها با موفقیت دریافت شد',
+        en: 'Cities fetched successfully',
+        status: 200
+    },
+    successFetchProvinces: {
+        fa: "لیست استان‌ها با موفقیت دریافت شد",
+        en: "Provinces fetched successfully",
+        status: 200
+    },
+    successFetchCities: {
+        fa: "لیست شهرها با موفقیت دریافت شد",
+        en: "Cities fetched successfully",
+        status: 200
+    },
+    readFileError: {
+        fa: "خطا در خواندن فایل",
+        en: "Error reading file",
+        status: 500
+    },
+    invalidJsonFormat: {
+        fa: "فرمت فایل JSON نامعتبر است",
+        en: "Invalid JSON format",
+        status: 500
+    },
     successDeleteTheme: {
         fa: "تم با موفقیت حذف شد",
         en: "Theme deleted successfully",
