@@ -5,8 +5,10 @@ import {
     deleteAddressController, updateUserController,
     getAddressController, getAllAddressController,
     setUserAvatarController,
+    getUserAvatarController,
+    deleteUserAvatarController,
 } from "./user.controller.mjs";
-import { uploadFile, } from '../../common/util/multer.mjs'
+import { uploadAvatar, } from '../../common/util/multer.mjs'
 
 const router = express.Router();
 
@@ -22,6 +24,12 @@ router.put("/address/:id", updateAddressController);
 
 router.delete("/address/:id", deleteAddressController);
 
-router.post("/avatar", uploadFile.single("avatar"), setUserAvatarController);
+router.post("/avatar", uploadAvatar, setUserAvatarController);
+
+router.get("/avatar", getUserAvatarController);
+
+router.delete("/avatar", deleteUserAvatarController);
+
+
 
 export default router;

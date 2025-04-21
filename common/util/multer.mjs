@@ -1,8 +1,8 @@
 import multer from "multer";
 import path from "path";
-import createError from "http-errors";
 import { Readable } from "stream";
 import cloudinary from "../../config/cloudinary.mjs";
+import { createLocalizedError } from "../locale/localizationHelper.mjs";
 
 const bufferToStream = (buffer) => {
     const stream = new Readable();
@@ -13,22 +13,36 @@ const bufferToStream = (buffer) => {
 
 const storage = multer.memoryStorage();
 
-function fileFilter(req, file, cb) {
-    const ext = path.extname(file.originalname).toLowerCase();
-    const mimetypes = [".jpg", ".jpeg", ".png", ".webp", ".gif"];
-    if (mimetypes.includes(ext)) {
-        return cb(null, true);
-    }
-    return cb(createError.BadRequest("فرمت ارسال شده تصویر صحیح نمیباشد"));
-}
+const pictureMaxSize = 2 * 1000 * 1000; // 2MB
 
-const pictureMaxSize = 1 * 1000 * 1000;
+const fileFilter = (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    const mimetypes = [".jpg", ".jpeg", ".png", ".gif"];
+
+    if (!mimetypes.includes(ext)) {
+        return cb(createLocalizedError("invalidAvatarType"));
+    }
+
+    return cb(null, true);
+};
 
 export const uploadFile = multer({
     storage,
     fileFilter,
     limits: { fileSize: pictureMaxSize }
 });
+
+export const uploadAvatar = (req, res, next) => {
+    uploadFile.single("avatar")(req, res, (err) => {
+        if (err) {
+            if (err.code === "LIMIT_FILE_SIZE") {
+                return next(createLocalizedError("avatarTooLarge"));
+            }
+            return next(err);
+        }
+        next();
+    });
+};
 
 // Single Cloudinary
 
@@ -60,4 +74,5 @@ export const uploadMultipleToCloudinary = async (files, folder = "uploads") => {
     }
 };
 
-export default { uploadFile, uploadSingleToCloudinary, uploadMultipleToCloudinary }
+
+export default { uploadAvatar, uploadSingleToCloudinary, uploadMultipleToCloudinary }

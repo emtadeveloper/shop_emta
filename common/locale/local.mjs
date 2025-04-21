@@ -69,7 +69,21 @@ export const messages = {
         en: "Invalid image format (only jpg, png, or webp allowed)",
         status: 400,
     },
-
+    avatarNotFound: {
+        fa: "تصویر آواتار یافت نشد",
+        en: "Avatar not found",
+        status: 404,
+    },
+    successDeleteAvatar: {
+        fa: "تصویر آواتار با موفقیت حذف شد",
+        en: "Avatar deleted successfully",
+        status: 200,
+    },
+    successGetAvatar: {
+        fa: "تصویر آواتار با موفقیت دریافت شد",
+        en: "Avatar fetched successfully",
+        status: 200,
+    },
     avatarTooLarge: {
         fa: "حجم تصویر نباید بیشتر از ۲ مگابایت باشد",
         en: "Image size must not exceed 2MB",

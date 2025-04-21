@@ -109,10 +109,34 @@ export const updateUserController = async (req, res, next) => {
 
 export const setUserAvatarController = async (req, res, next) => {
     try {
-        const data = await userService.setUserAvatar(req.user._id, req.file);
+
+        if (!req.file) {
+            throw createLocalizedError("avatarRequired");
+        }
+
+        const { file, user } = req;
+        const data = await userService.setUserAvatar(user, file);
 
         return createLocalizedSuccess(res, "successSetAvatar", data);
 
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const deleteUserAvatarController = async (req, res, next) => {
+    try {
+        const avatar = await userService.deleteUserAvatar(req.user);
+        return createLocalizedSuccess(res, "successDeleteAvatar", avatar);
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const getUserAvatarController = async (req, res, next) => {
+    try {
+        const avatar = await userService.getUserAvatar(req.user);
+        return createLocalizedSuccess(res, "successGetAvatar", avatar);
     } catch (err) {
         next(err);
     }

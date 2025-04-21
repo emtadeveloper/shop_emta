@@ -150,32 +150,27 @@ export const updateUser = async (oldData, newData) => {
     }
 };
 
-export const setUserAvatar = async (userId, file) => {
 
-    const existingUser = await UserModel.findById(userId, "avatar firstName lastName");
-    if (!existingUser) throw createLocalizedError("userNotFound");
+export const setUserAvatar = async (user, file) => {
 
-    if (existingUser.avatar?.public_id) {
-        await cloudinary.uploader.destroy(existingUser.avatar.public_id);
+    if (user.avatar?.public_id) {
+        await cloudinary.uploader.destroy(user.avatar.public_id);
     }
-    console.log(file);
+
     const { imageUrl, public_id } = await uploadSingleToCloudinary(file, "avatars");
 
     const updatedUser = await UserModel.findOneAndUpdate(
-        { _id: userId },
-        {
-            $set: {
-                avatar: {
-                    imageUrl,
-                    public_id
-                }
-            }
-        },
+        { _id: user._id },
+        { $set: { avatar: { imageUrl, public_id } } },
         {
             new: true,
             projection: { _id: 1, firstName: 1, lastName: 1, avatar: 1 }
         }
     );
+
+    if (!updatedUser) {
+        throw createLocalizedError("userNotFound");
+    }
 
     return {
         _id: updatedUser._id,
@@ -184,4 +179,29 @@ export const setUserAvatar = async (userId, file) => {
     };
 };
 
-export default { createAddress, updateAddress, deleteAddress, updateUser, getAddress, getAllAddress, setUserAvatar }
+export const deleteUserAvatar = async (user) => {
+    if (!user.avatar?.public_id) {
+        throw createLocalizedError("avatarNotFound");
+    }
+    try {
+        await cloudinary.uploader.destroy(user.avatar.public_id);
+    } catch (err) {
+        console.error("Cloudinary destroy error:", err.message);
+    }
+    const updated = await UserModel.findByIdAndUpdate(
+        user._id,
+        { $set: { avatar: null } },
+        { new: true, projection: { avatar: 1 } }
+    );
+    return updated.avatar;
+};
+
+export const getUserAvatar = async (user) => {
+    const found = await UserModel.findById(user._id, "avatar");
+    if (!found || !found.avatar) {
+        throw createLocalizedError("avatarNotFound");
+    }
+    return found.avatar;
+};
+
+export default { createAddress, updateAddress, deleteAddress, updateUser, getAddress, getAllAddress, setUserAvatar, deleteUserAvatar, getUserAvatar }

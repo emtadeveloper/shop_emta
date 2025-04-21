@@ -467,7 +467,7 @@
     summary: Update user avatar
     tags:
       - User
-    description: Update the user's avatar with a new image.
+    description: Upload and set a new avatar image for the authenticated user.
     requestBody:
       required: true
       content:
@@ -478,7 +478,7 @@
               avatar:
                 type: string
                 format: binary
-                description: The new avatar image to be uploaded.
+                description: The new avatar image to be uploaded
                 example: (file)
     responses:
       200:
@@ -496,10 +496,99 @@
                   properties:
                     fa:
                       type: string
-                      example: "آواتار با موفقیت به‌روزرسانی شد"
+                      example: "آواتار با موفقیت بارگذاری شد"
                     en:
                       type: string
-                      example: "Avatar updated successfully"
+                      example: "Avatar image uploaded successfully"
                     status:
                       type: integer
                       example: 200
+                data:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      example: "605c5f1b9f1b2c0015b2a3f7"
+                    name:
+                      type: string
+                      example: "John Doe"
+                    avatar:
+                      type: object
+                      properties:
+                        imageUrl:
+                          type: string
+                          format: uri
+                          example: "https://res.cloudinary.com/demo/image/upload/v1616245381/avatars/abc123.png"
+                        public_id:
+                          type: string
+                          example: "avatars/abc123"
+  get:
+    summary: Get user avatar
+    tags:
+      - User
+    description: Retrieve the current avatar information for the authenticated user.
+    responses:
+      200:
+        description: Avatar fetched successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: object
+                  properties:
+                    fa:
+                      type: string
+                      example: "تصویر آواتار با موفقیت دریافت شد"
+                    en:
+                      type: string
+                      example: "Avatar fetched successfully"
+                    status:
+                      type: integer
+                      example: 200
+                data:
+                  type: object
+                  properties:
+                    imageUrl:
+                      type: string
+                      format: uri
+                      example: "https://res.cloudinary.com/demo/image/upload/v1616245381/avatars/abc123.png"
+                    public_id:
+                      type: string
+                      example: "avatars/abc123"
+  delete:
+    summary: Delete user avatar
+    tags:
+      - User
+    description: Remove the current avatar for the authenticated user.
+    responses:
+      200:
+        description: Avatar deleted successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: object
+                  properties:
+                    fa:
+                      type: string
+                      example: "تصویر آواتار با موفقیت حذف شد"
+                    en:
+                      type: string
+                      example: "Avatar deleted successfully"
+                    status:
+                      type: integer
+                      example: 200
+                data:
+                  type: object
+                  nullable: true
+                  example: null
