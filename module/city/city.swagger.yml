@@ -36,8 +36,8 @@ components:
   get:
     tags:
       - Location
-    summary: دریافت لیست استان‌ها
-    description: این روت لیست کامل استان‌ها را از فایل `provinces.json` بازیابی می‌کند.
+    summary: Get list of provinces
+    description: This route retrieves the full list of provinces from the `provinces.json` file.
     responses:
       200:
         description: Provinces fetched successfully
@@ -70,8 +70,8 @@ components:
   get:
     tags:
       - Location
-    summary: دریافت لیست شهرها
-    description: این روت لیست کامل شهرها را از فایل `cities.json` بازیابی می‌کند.
+    summary: Get list of cities
+    description: This route retrieves the full list of cities from the `cities.json` file.
     responses:
       200:
         description: Cities fetched successfully
