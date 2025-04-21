@@ -1,6 +1,5 @@
 import express from "express"
-import { register, login, send, verify, refreshToken, me, forgotPassword, resetPassword } from "./auth.controller.mjs"
-import Auth from "../../common/middleware/AuthMiddleware.mjs";
+import { register, login, send, verify, refreshToken, forgotPassword, resetPassword } from "./auth.controller.mjs"
 
 const router = express.Router()
 
@@ -11,6 +10,5 @@ router.post("/verify-otp", verify);
 router.post("/refresh-token", refreshToken);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token", resetPassword);
-router.get("/me", Auth, me);
 
 export default router;

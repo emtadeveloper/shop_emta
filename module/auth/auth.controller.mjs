@@ -111,13 +111,6 @@ export const resetPassword = async (req, res, next) => {
     }
 };
 
-export const me = async (req, res, next) => {
-    try {
-        return createLocalizedSuccess(res, "success", req.user);
-    } catch (error) {
-        next(error)
-    }
-}
 
 
-export default { register, login, send, verify, refreshToken, me }
+export default { register, login, send, verify, refreshToken }

@@ -90,6 +90,14 @@ export const getAllAddressController = async (req, res, next) => {
     }
 }
 
+export const me = async (req, res, next) => {
+    try {
+        return createLocalizedSuccess(res, "success", req.user);
+    } catch (error) {
+        next(error)
+    }
+}
+
 export const updateUserController = async (req, res, next) => {
     try {
 

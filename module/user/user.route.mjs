@@ -7,12 +7,16 @@ import {
     setUserAvatarController,
     getUserAvatarController,
     deleteUserAvatarController,
+    me
 } from "./user.controller.mjs";
 import { uploadAvatar, } from '../../common/util/multer.mjs'
+import Auth from '../../common/middleware/AuthMiddleware.mjs'
 
 const router = express.Router();
 
 router.put("/", updateUserController);
+
+router.get("/", Auth, me);
 
 router.get("/address", getAllAddressController);
 
