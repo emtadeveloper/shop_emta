@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
 import { createLocalizedError, createLocalizedSuccess } from "../../common/locale/localizationHelper.mjs";
 import userService from "./user.service.mjs";
-import { createAddressValidation, updateAddressValidation, updateProfileValidationSchema } from "./user.validator.mjs";
+import {
+    createAddressValidation,
+    updateAddressValidation,
+    updateProfileValidationSchema
+} from "./user.validator.mjs";
 
 export const createAddressController = async (req, res, next) => {
     try {
@@ -102,3 +106,14 @@ export const updateUserController = async (req, res, next) => {
         next(error)
     }
 }
+
+export const setUserAvatarController = async (req, res, next) => {
+    try {
+        const data = await userService.setUserAvatar(req.user._id, req.file);
+
+        return createLocalizedSuccess(res, "successSetAvatar", data);
+
+    } catch (err) {
+        next(err);
+    }
+};

@@ -59,6 +59,27 @@ export const messages = {
         en: "Error storing captcha",
         status: 500,
     },
+    avatarRequired: {
+        fa: "تصویر پروفایل الزامی است",
+        en: "Avatar  is required",
+        status: 400,
+    },
+    invalidAvatarType: {
+        fa: "فرمت تصویر معتبر نیست (فقط jpg، png یا webp مجاز است)",
+        en: "Invalid image format (only jpg, png, or webp allowed)",
+        status: 400,
+    },
+
+    avatarTooLarge: {
+        fa: "حجم تصویر نباید بیشتر از ۲ مگابایت باشد",
+        en: "Image size must not exceed 2MB",
+        status: 400,
+    },
+    successSetAvatar: {
+        fa: "تصویر پروفایل با موفقیت ثبت شد",
+        en: "Avatar set successfully",
+        status: 200,
+    },
     captchaNotFound: {
         fa: "کپچای مورد نظر پیدا نشد",
         en: "Captcha not found",
@@ -158,6 +179,16 @@ export const messages = {
         fa: "کد پستی وارد شده نامعتبر است.",
         en: "Invalid postal code.",
         status: 400
+    },
+    invalidImageFormat: {
+        fa: "فرمت تصویر ارسالی معتبر نیست",
+        en: "Invalid image format",
+        status: 400,
+    },
+    cloudinaryUploadFailed: {
+        fa: "آپلود فایل به کلودینری با شکست مواجه شد",
+        en: "Upload to Cloudinary failed",
+        status: 500,
     },
     postalCodeInvalidLength: {
         fa: "کد پستی باید 10 رقم باشد.",

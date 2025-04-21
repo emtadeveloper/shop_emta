@@ -15,6 +15,11 @@ const addressSchema = new mongoose.Schema({
     cityId: { type: Number, required: true }
 });
 
+const avatarSchema = new mongoose.Schema({
+    imageUrl: String,
+    public_id: String,
+})
+
 const userSchema = new mongoose.Schema({
     phone: { type: String, required: true, unique: true },
     username: { type: String, required: true, unique: true, trim: true },
@@ -26,6 +31,7 @@ const userSchema = new mongoose.Schema({
     addresses: { type: [addressSchema] },
     resetPasswordToken: { type: String, default: null },
     resetPasswordExpire: { type: Date, default: null },
+    avatar: { type: avatarSchema, default: null },
     role: {
         type: mongoose.Types.ObjectId,
         ref: "Role",
@@ -87,6 +93,5 @@ userSchema.methods.generateResetPasswordToken = async function () {
 
     return rawToken;
 };
-
 
 export default mongoose.model("User", userSchema);

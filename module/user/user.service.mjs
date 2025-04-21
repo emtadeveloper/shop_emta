@@ -1,5 +1,8 @@
 import { createLocalizedError } from "../../common/locale/localizationHelper.mjs";
 import { createUpdateFields } from "../../common/util/updatedFields.mjs"
+import { uploadSingleToCloudinary } from "../../common/util/multer.mjs"
+import cloudinary from "../../config/cloudinary.mjs";
+
 import UserModel from "./user.model.mjs"
 
 export const createAddress = async (addressData, userId) => {
@@ -147,4 +150,38 @@ export const updateUser = async (oldData, newData) => {
     }
 };
 
-export default { createAddress, updateAddress, deleteAddress, updateUser, getAddress, getAllAddress }
+export const setUserAvatar = async (userId, file) => {
+
+    const existingUser = await UserModel.findById(userId, "avatar firstName lastName");
+    if (!existingUser) throw createLocalizedError("userNotFound");
+
+    if (existingUser.avatar?.public_id) {
+        await cloudinary.uploader.destroy(existingUser.avatar.public_id);
+    }
+    console.log(file);
+    const { imageUrl, public_id } = await uploadSingleToCloudinary(file, "avatars");
+
+    const updatedUser = await UserModel.findOneAndUpdate(
+        { _id: userId },
+        {
+            $set: {
+                avatar: {
+                    imageUrl,
+                    public_id
+                }
+            }
+        },
+        {
+            new: true,
+            projection: { _id: 1, firstName: 1, lastName: 1, avatar: 1 }
+        }
+    );
+
+    return {
+        _id: updatedUser._id,
+        name: `${updatedUser.firstName} ${updatedUser.lastName}`,
+        avatar: updatedUser.avatar
+    };
+};
+
+export default { createAddress, updateAddress, deleteAddress, updateUser, getAddress, getAllAddress, setUserAvatar }

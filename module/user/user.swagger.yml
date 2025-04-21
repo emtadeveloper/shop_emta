@@ -2,7 +2,7 @@
   get:
     summary: Retrieve all user addresses
     tags:
-      - User 
+      - User
     description: Get the list of all addresses saved for the authenticated user
     responses:
       200:
@@ -62,7 +62,7 @@
   post:
     summary: Create a new user address
     tags:
-      - User 
+      - User
     description: Create a new address for the user
     requestBody:
       required: true
@@ -149,7 +149,7 @@
   get:
     summary: Retrieve a specific user address
     tags:
-      - User 
+      - User
     description: Get the details of a single address by its ID
     parameters:
       - name: id
@@ -211,7 +211,7 @@
   put:
     summary: Update a specific user address
     tags:
-      - User 
+      - User
     description: Update the information of a specific address based on its ID
     parameters:
       - name: id
@@ -304,7 +304,7 @@
   delete:
     summary: Delete a specific user address
     tags:
-      - User 
+      - User
     description: Delete a specific address based on its ID
     parameters:
       - name: id
@@ -458,6 +458,48 @@
                     en:
                       type: string
                       example: "Password updated successfully"
+                    status:
+                      type: integer
+                      example: 200
+
+/api/v1/user/avatar:
+  post:
+    summary: Update user avatar
+    tags:
+      - User
+    description: Update the user's avatar with a new image.
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              avatar:
+                type: string
+                format: binary
+                description: The new avatar image to be uploaded.
+                example: (file)
+    responses:
+      200:
+        description: Avatar updated successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: object
+                  properties:
+                    fa:
+                      type: string
+                      example: "آواتار با موفقیت به‌روزرسانی شد"
+                    en:
+                      type: string
+                      example: "Avatar updated successfully"
                     status:
                       type: integer
                       example: 200
