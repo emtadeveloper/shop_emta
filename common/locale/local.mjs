@@ -4,6 +4,21 @@ export const messages = {
         en: "User not found",
         status: 404,
     },
+    successUpdateTheme: {
+        fa: "تم با موفقیت به‌روزرسانی شد",
+        en: "Theme updated successfully",
+        status: 200,
+    },
+    themeNotFound: {
+        fa: "تم مورد نظر پیدا نشد",
+        en: "Theme not found",
+        status: 404,
+    },
+    successDeleteTheme: {
+        fa: "تم با موفقیت حذف شد",
+        en: "Theme deleted successfully",
+        status: 200,
+    },
     invalidUpdateData: {
         fa: "داده‌های ارسال شده برای به‌روزرسانی نامعتبر است",
         en: "Invalid data for update",

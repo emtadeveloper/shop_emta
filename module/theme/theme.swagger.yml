@@ -1,0 +1,206 @@
+components:
+  schemas:
+    Theme:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: objectId
+          example: "507f1f77bcf86cd799439011"
+        darkMode:
+          type: boolean
+          example: false
+        language:
+          type: string
+          enum: ['en', 'fa', 'de', 'fr']
+          default: 'en'
+          example: "en"
+        contrast:
+          type: boolean
+          example: false
+        compact:
+          type: boolean
+          example: false
+        rtl:
+          type: boolean
+          example: false
+        color:
+          type: string
+          example: "#007bff"
+        apparent:
+          type: string
+          enum: ['light', 'dark']
+          default: 'light'
+          example: "light"
+        layout:
+          type: string
+          enum: ['grid', 'list']
+          default: 'grid'
+          example: "grid"
+        integrate:
+          type: boolean
+          example: true
+        size:
+          type: string
+          enum: ['small', 'medium', 'large']
+          default: 'medium'
+          example: "medium"
+        font:
+          type: string
+          default: 'IranSans'
+          example: "IranSans"
+
+paths:
+  /api/v1/theme:
+    put:
+      tags:
+        - Theme
+      summary: Create or update user theme
+      description: Creates or updates the current user's theme including mode and color settings.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                darkMode:
+                  type: boolean
+                  example: false
+                language:
+                  type: string
+                  enum: ['en', 'fa', 'de', 'fr']
+                  example: "en"
+                contrast:
+                  type: boolean
+                  example: false
+                compact:
+                  type: boolean
+                  example: false
+                rtl:
+                  type: boolean
+                  example: false
+                color:
+                  type: string
+                  example: "#007bff"
+                apparent:
+                  type: string
+                  enum: ['light', 'dark']
+                  example: "light"
+                layout:
+                  type: string
+                  enum: ['grid', 'list']
+                  example: "grid"
+                integrate:
+                  type: boolean
+                  example: true
+                size:
+                  type: string
+                  enum: ['small', 'medium', 'large']
+                  example: "medium"
+                font:
+                  type: string
+                  example: "IranSans"
+      responses:
+        200:
+          description: Theme created or updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: object
+                    properties:
+                      fa:
+                        type: string
+                        example: "تم با موفقیت ذخیره شد"
+                      en:
+                        type: string
+                        example: "Theme saved successfully"
+                      status:
+                        type: integer
+                        example: 200
+                  data:
+                    $ref: '#/components/schemas/Theme'
+        400:
+          description: Validation error
+        401:
+          description: Authentication failed
+    delete:
+      tags:
+        - Theme
+      summary: Delete user theme
+      description: Deletes the current user's saved theme preferences.
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Theme deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: object
+                    properties:
+                      fa:
+                        type: string
+                        example: "تم با موفقیت حذف شد"
+                      en:
+                        type: string
+                        example: "Theme deleted successfully"
+                      status:
+                        type: integer
+                        example: 200
+                  data:
+                    $ref: '#/components/schemas/Theme'
+        404:
+          description: Theme not found
+        401:
+          description: Authentication failed
+    get:
+      tags:
+        - Theme
+      summary: Get current user theme
+      description: Retrieves the theme preferences of the authenticated user.
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Theme fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: object
+                    properties:
+                      fa:
+                        type: string
+                        example: "تم با موفقیت دریافت شد"
+                      en:
+                        type: string
+                        example: "Theme fetched successfully"
+                      status:
+                        type: integer
+                        example: 200
+                  data:
+                    $ref: '#/components/schemas/Theme'
+        404:
+          description: Theme not found
+        401:
+          description: Authentication failed
