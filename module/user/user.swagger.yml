@@ -1,8 +1,214 @@
+tags:
+  - name: User
+    description: Operations related to user profiles, addresses, and avatars
+
+components:
+  schemas:
+    MessageObject:
+      type: object
+      properties:
+        fa:
+          type: string
+          example: "عملیات با موفقیت انجام شد"
+        en:
+          type: string
+          example: "Operation completed successfully"
+        status:
+          type: integer
+          example: 200
+
+    Location:
+      type: object
+      properties:
+        lat:
+          type: number
+          example: 36.1234
+        lng:
+          type: number
+          example: 52.4567
+
+    Address:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "60d0fe4f5311236168a109cb"
+        type:
+          type: string
+          enum: [home, work, other]
+          example: "home"
+        postalCode:
+          type: string
+          example: "9876543210"
+        address:
+          type: string
+          example: "Boulevard Kashavarz, No. 50"
+        cityId:
+          type: integer
+          example: 110
+        location:
+          $ref: "#/components/schemas/Location"
+
+    AddressInput:
+      type: object
+      required: [type, postalCode, address, cityId, location]
+      properties:
+        type:
+          type: string
+          enum: [home, work, other]
+          example: "home"
+        postalCode:
+          type: string
+          example: "9876543210"
+        address:
+          type: string
+          example: "Boulevard Kashavarz, No. 50"
+        cityId:
+          type: integer
+          example: 110
+        location:
+          $ref: "#/components/schemas/Location"
+
+    UserAddressesResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          $ref: "#/components/schemas/MessageObject"
+        data:
+          type: object
+          properties:
+            addresses:
+              type: array
+              items:
+                $ref: "#/components/schemas/Address"
+
+    UserAddressResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          $ref: "#/components/schemas/MessageObject"
+        data:
+          $ref: "#/components/schemas/Address"
+
+    UserProfileInput:
+      type: object
+      properties:
+        firstName:
+          type: string
+          example: "علی"
+        lastName:
+          type: string
+          example: "رضایی"
+        phone:
+          type: string
+          pattern: '^09\\d{9}$'
+          example: "09123456789"
+        email:
+          type: string
+          format: email
+          example: "ali.rezaei@example.com"
+        username:
+          type: string
+          minLength: 3
+          example: "alirezaei"
+
+    Role:
+      type: object
+      properties:
+        roleName:
+          type: string
+          example: "admin"
+        permissions:
+          type: array
+          items:
+            type: integer
+          example: [1, 2, 3, 4, 5, 6]
+
+    UserProfile:
+      type: object
+      properties:
+        phone:
+          type: string
+          example: "09154144503"
+        username:
+          type: string
+          example: "alirezayi"
+        email:
+          type: string
+          example: "emta137671@gmail.com"
+        firstName:
+          type: string
+          example: "Ali"
+        lastName:
+          type: string
+          example: "Rezayi"
+        role:
+          $ref: "#/components/schemas/Role"
+        addresses:
+          type: array
+          items:
+            $ref: "#/components/schemas/Address"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2025-04-19T04:41:49.867Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2025-04-19T04:41:49.867Z"
+
+    UserProfileResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          $ref: "#/components/schemas/MessageObject"
+        data:
+          $ref: "#/components/schemas/UserProfile"
+
+    AvatarData:
+      type: object
+      properties:
+        avatarUrl:
+          type: string
+          format: uri
+          example: "https://cdn.example.com/avatars/user123.jpg"
+        public_id:
+          type: string
+          example: "avatars/user123"
+
+    AvatarResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          $ref: "#/components/schemas/MessageObject"
+        data:
+          $ref: "#/components/schemas/AvatarData"
+
+    GenericSuccessMessage:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          $ref: "#/components/schemas/MessageObject"
+
 /api/v1/user/address:
   get:
     summary: Retrieve all user addresses
-    tags:
-      - User
+    tags: [User]
     description: Get the list of all addresses saved for the authenticated user
     responses:
       200:
@@ -10,338 +216,77 @@
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                success:
-                  type: boolean
-                  example: true
-                message:
-                  type: object
-                  properties:
-                    fa:
-                      type: string
-                      example: "آدرس‌ها با موفقیت بازیابی شدند"
-                    en:
-                      type: string
-                      example: "Addresses retrieved successfully"
-                    status:
-                      type: integer
-                      example: 200
-                data:
-                  type: object
-                  properties:
-                    addresses:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          _id:
-                            type: string
-                            example: "60d0fe4f5311236168a109cb"
-                          type:
-                            type: string
-                            example: "home"
-                          postalCode:
-                            type: string
-                            example: "9876543210"
-                          address:
-                            type: string
-                            example: "Boulevard Kashavarz, No. 50"
-                          cityId:
-                            type: integer
-                            example: 110
-                          location:
-                            type: object
-                            properties:
-                              lat:
-                                type: number
-                                example: 36.1234
-                              lng:
-                                type: number
-                                example: 52.4567
+              $ref: "#/components/schemas/UserAddressesResponse"
   post:
     summary: Create a new user address
-    tags:
-      - User
-    description: Create a new address for the user
+    tags: [User]
+    description: Create a new address for the authenticated user
     requestBody:
       required: true
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              type:
-                type: string
-                enum: [home, work, other]
-                example: "home"
-              postalCode:
-                type: string
-                example: "9876543210"
-              address:
-                type: string
-                example: "Boulevard Kashavarz, No. 50"
-              cityId:
-                type: integer
-                example: 110
-              location:
-                type: object
-                properties:
-                  lat:
-                    type: number
-                    example: 36.1234
-                  lng:
-                    type: number
-                    example: 52.4567
+            $ref: "#/components/schemas/AddressInput"
     responses:
       201:
         description: Address created successfully
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                success:
-                  type: boolean
-                  example: true
-                message:
-                  type: object
-                  properties:
-                    fa:
-                      type: string
-                      example: "آدرس با موفقیت ایجاد شد"
-                    en:
-                      type: string
-                      example: "Address created successfully"
-                    status:
-                      type: integer
-                      example: 201
-                data:
-                  type: object
-                  properties:
-                    addresses:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          type:
-                            type: string
-                            example: "home"
-                          postalCode:
-                            type: string
-                            example: "9876543210"
-                          address:
-                            type: string
-                            example: "Boulevard Kashavarz, No. 50"
-                          cityId:
-                            type: integer
-                            example: 110
-                          location:
-                            type: object
-                            properties:
-                              lat:
-                                type: number
-                                example: 36.1234
-                              lng:
-                                type: number
-                                example: 52.4567
+              $ref: "#/components/schemas/UserAddressesResponse"
+
 /api/v1/user/address/{id}:
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the address
   get:
     summary: Retrieve a specific user address
-    tags:
-      - User
+    tags: [User]
     description: Get the details of a single address by its ID
-    parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-        description: ID of the address to retrieve
     responses:
       200:
         description: Address retrieved successfully
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                success:
-                  type: boolean
-                  example: true
-                message:
-                  type: object
-                  properties:
-                    fa:
-                      type: string
-                      example: "آدرس با موفقیت بازیابی شد"
-                    en:
-                      type: string
-                      example: "Address retrieved successfully"
-                    status:
-                      type: integer
-                      example: 200
-                data:
-                  type: object
-                  properties:
-                    _id:
-                      type: string
-                      example: "60d0fe4f5311236168a109cb"
-                    type:
-                      type: string
-                      example: "work"
-                    postalCode:
-                      type: string
-                      example: "9876543210"
-                    address:
-                      type: string
-                      example: "Boulevard Kashavarz, No. 50"
-                    cityId:
-                      type: integer
-                      example: 110
-                    location:
-                      type: object
-                      properties:
-                        lat:
-                          type: number
-                          example: 36.1234
-                        lng:
-                          type: number
-                          example: 52.4567
+              $ref: "#/components/schemas/UserAddressResponse"
   put:
     summary: Update a specific user address
-    tags:
-      - User
+    tags: [User]
     description: Update the information of a specific address based on its ID
-    parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-        description: ID of the address to be updated
     requestBody:
       required: true
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              type:
-                type: string
-                enum: [home, work, other]
-                example: "work"
-              postalCode:
-                type: string
-                example: "9876543210"
-              address:
-                type: string
-                example: "Boulevard Kashavarz, No. 50"
-              cityId:
-                type: integer
-                example: 110
-              location:
-                type: object
-                properties:
-                  lat:
-                    type: number
-                    example: 36.1234
-                  lng:
-                    type: number
-                    example: 52.4567
+            $ref: "#/components/schemas/AddressInput"
     responses:
       200:
         description: Address updated successfully
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                success:
-                  type: boolean
-                  example: true
-                message:
-                  type: object
-                  properties:
-                    fa:
-                      type: string
-                      example: "آدرس با موفقیت به‌روزرسانی شد"
-                    en:
-                      type: string
-                      example: "Address updated successfully"
-                    status:
-                      type: integer
-                      example: 200
-                data:
-                  type: object
-                  properties:
-                    addresses:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          type:
-                            type: string
-                            example: "work"
-                          postalCode:
-                            type: string
-                            example: "9876543210"
-                          address:
-                            type: string
-                            example: "Boulevard Kashavarz, No. 50"
-                          cityId:
-                            type: integer
-                            example: 110
-                          location:
-                            type: object
-                            properties:
-                              lat:
-                                type: number
-                                example: 36.1234
-                              lng:
-                                type: number
-                                example: 52.4567
+              $ref: "#/components/schemas/UserAddressesResponse"
   delete:
     summary: Delete a specific user address
-    tags:
-      - User
+    tags: [User]
     description: Delete a specific address based on its ID
-    parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-        description: ID of the address to be deleted
     responses:
       200:
         description: Address deleted successfully
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                success:
-                  type: boolean
-                  example: true
-                message:
-                  type: object
-                  properties:
-                    fa:
-                      type: string
-                      example: "آدرس با موفقیت حذف شد"
-                    en:
-                      type: string
-                      example: "Address deleted successfully"
-                    status:
-                      type: integer
-                      example: 200
+              $ref: "#/components/schemas/GenericSuccessMessage"
 
 /api/v1/user:
   get:
     summary: Get user profile
-    tags:
-      - User
+    tags: [User]
     description: Get the authenticated user's profile using access token
     responses:
       200:
@@ -349,195 +294,30 @@
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                success:
-                  type: boolean
-                  example: true
-                message:
-                  type: object
-                  properties:
-                    fa:
-                      type: string
-                      example: "پروفایل کاربر با موفقیت دریافت شد"
-                    en:
-                      type: string
-                      example: "User profile retrieved successfully"
-                    status:
-                      type: integer
-                      example: 200
-                data:
-                  type: object
-                  properties:
-                    phone:
-                      type: string
-                      example: "09154144503"
-                    username:
-                      type: string
-                      example: "alirezayi"
-                    email:
-                      type: string
-                      example: "emta137671@gmail.com"
-                    firstName:
-                      type: string
-                      example: "Ali"
-                    lastName:
-                      type: string
-                      example: "Rezayi"
-                    role:
-                      type: object
-                      properties:
-                        roleName:
-                          type: string
-                          example: "admin"
-                        permissions:
-                          type: array
-                          items:
-                            type: integer
-                          example: [1, 2, 3, 4, 5, 6]
-                    addresses:
-                      type: array
-                      items:
-                        type: object
-                      example: []
-                    createdAt:
-                      type: string
-                      format: date-time
-                      example: "2025-04-19T04:41:49.867Z"
-                    updatedAt:
-                      type: string
-                      format: date-time
-                      example: "2025-04-19T04:41:49.867Z"
+              $ref: "#/components/schemas/UserProfileResponse"
   put:
     summary: Update user profile
-    tags:
-      - User
+    tags: [User]
     description: Update one or more fields in the user’s profile
     requestBody:
       required: true
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              firstName:
-                type: string
-                example: "علی"
-              lastName:
-                type: string
-                example: "رضایی"
-              phone:
-                type: string
-                pattern: '^09\\d{9}$'
-                example: "09123456789"
-              email:
-                type: string
-                format: email
-                example: "ali.rezaei@example.com"
-              username:
-                type: string
-                minLength: 3
-                example: "alirezaei"
+            $ref: "#/components/schemas/UserProfileInput"
     responses:
       200:
         description: Profile updated successfully
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                success:
-                  type: boolean
-                  example: true
-                message:
-                  type: object
-                  properties:
-                    fa:
-                      type: string
-                      example: "پروفایل با موفقیت به‌روزرسانی شد"
-                    en:
-                      type: string
-                      example: "Profile updated successfully"
-                    status:
-                      type: integer
-                      example: 200
-                data:
-                  type: object
-                  properties:
-                    _id:
-                      type: string
-                      example: "60d0fe4f5311236168a109ca"
-                    firstName:
-                      type: string
-                      example: "علی"
-                    lastName:
-                      type: string
-                      example: "رضایی"
-                    phone:
-                      type: string
-                      example: "09123456789"
-                    email:
-                      type: string
-                      example: "ali.rezaei@example.com"
-                    username:
-                      type: string
-                      example: "alirezaei"
-
-/api/v1/user/password:
-  put:
-    summary: Change user password
-    tags:
-      - User
-    description: Update the current password to a new password
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              currentPassword:
-                type: string
-                minLength: 6
-                example: "oldPass123"
-              newPassword:
-                type: string
-                minLength: 6
-                example: "newPass456"
-              confirmNewPassword:
-                type: string
-                minLength: 6
-                example: "newPass456"
-    responses:
-      200:
-        description: Password updated successfully
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                success:
-                  type: boolean
-                  example: true
-                message:
-                  type: object
-                  properties:
-                    fa:
-                      type: string
-                      example: "گذرواژه با موفقیت به‌روزرسانی شد"
-                    en:
-                      type: string
-                      example: "Password updated successfully"
-                    status:
-                      type: integer
-                      example: 200
+              $ref: "#/components/schemas/UserProfileResponse"
 
 /api/v1/user/avatar:
   post:
-    summary: Update user avatar
-    tags:
-      - User
-    description: Upload and set a new avatar image for the authenticated user.
+    summary: Upload or update user avatar
+    tags: [User]
+    description: Upload a new avatar image for the authenticated user
     requestBody:
       required: true
       content:
@@ -548,117 +328,33 @@
               avatar:
                 type: string
                 format: binary
-                description: The new avatar image to be uploaded
-                example: (file)
+                description: The avatar image file (jpeg, png)
     responses:
       200:
-        description: Avatar updated successfully
+        description: Avatar uploaded successfully
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                success:
-                  type: boolean
-                  example: true
-                message:
-                  type: object
-                  properties:
-                    fa:
-                      type: string
-                      example: "آواتار با موفقیت بارگذاری شد"
-                    en:
-                      type: string
-                      example: "Avatar image uploaded successfully"
-                    status:
-                      type: integer
-                      example: 200
-                data:
-                  type: object
-                  properties:
-                    _id:
-                      type: string
-                      example: "605c5f1b9f1b2c0015b2a3f7"
-                    name:
-                      type: string
-                      example: "John Doe"
-                    avatar:
-                      type: object
-                      properties:
-                        imageUrl:
-                          type: string
-                          format: uri
-                          example: "https://res.cloudinary.com/demo/image/upload/v1616245381/avatars/abc123.png"
-                        public_id:
-                          type: string
-                          example: "avatars/abc123"
+              $ref: "#/components/schemas/AvatarResponse"
   get:
     summary: Get user avatar
-    tags:
-      - User
-    description: Retrieve the current avatar information for the authenticated user.
+    tags: [User]
+    description: Retrieve the current avatar information for the authenticated user
     responses:
       200:
         description: Avatar fetched successfully
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                success:
-                  type: boolean
-                  example: true
-                message:
-                  type: object
-                  properties:
-                    fa:
-                      type: string
-                      example: "تصویر آواتار با موفقیت دریافت شد"
-                    en:
-                      type: string
-                      example: "Avatar fetched successfully"
-                    status:
-                      type: integer
-                      example: 200
-                data:
-                  type: object
-                  properties:
-                    imageUrl:
-                      type: string
-                      format: uri
-                      example: "https://res.cloudinary.com/demo/image/upload/v1616245381/avatars/abc123.png"
-                    public_id:
-                      type: string
-                      example: "avatars/abc123"
+              $ref: "#/components/schemas/AvatarResponse"
   delete:
     summary: Delete user avatar
-    tags:
-      - User
-    description: Remove the current avatar for the authenticated user.
+    tags: [User]
+    description: Remove the current avatar for the authenticated user
     responses:
       200:
         description: Avatar deleted successfully
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                success:
-                  type: boolean
-                  example: true
-                message:
-                  type: object
-                  properties:
-                    fa:
-                      type: string
-                      example: "تصویر آواتار با موفقیت حذف شد"
-                    en:
-                      type: string
-                      example: "Avatar deleted successfully"
-                    status:
-                      type: integer
-                      example: 200
-                data:
-                  type: object
-                  nullable: true
-                  example: null
+              $ref: "#/components/schemas/GenericSuccessMessage"

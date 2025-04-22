@@ -1,3 +1,7 @@
+tags:
+  - name: Location
+    description: Endpoints for location management and geocoding
+
 components:
   schemas:
     Province:

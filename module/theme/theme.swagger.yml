@@ -1,3 +1,7 @@
+tags:
+  - name: Theme
+    description: Endpoints for theme configuration and retrieval
+
 components:
   schemas:
     Theme:
@@ -12,8 +16,8 @@ components:
           example: false
         language:
           type: string
-          enum: ['en', 'fa', 'de', 'fr']
-          default: 'en'
+          enum: ["en", "fa", "de", "fr"]
+          default: "en"
           example: "en"
         contrast:
           type: boolean
@@ -29,25 +33,25 @@ components:
           example: "#007bff"
         apparent:
           type: string
-          enum: ['light', 'dark']
-          default: 'light'
+          enum: ["light", "dark"]
+          default: "light"
           example: "light"
         layout:
           type: string
-          enum: ['grid', 'list']
-          default: 'grid'
+          enum: ["grid", "list"]
+          default: "grid"
           example: "grid"
         integrate:
           type: boolean
           example: true
         size:
           type: string
-          enum: ['small', 'medium', 'large']
-          default: 'medium'
+          enum: ["small", "medium", "large"]
+          default: "medium"
           example: "medium"
         font:
           type: string
-          default: 'IranSans'
+          default: "IranSans"
           example: "IranSans"
 
 paths:
@@ -71,7 +75,7 @@ paths:
                   example: false
                 language:
                   type: string
-                  enum: ['en', 'fa', 'de', 'fr']
+                  enum: ["en", "fa", "de", "fr"]
                   example: "en"
                 contrast:
                   type: boolean
@@ -87,18 +91,18 @@ paths:
                   example: "#007bff"
                 apparent:
                   type: string
-                  enum: ['light', 'dark']
+                  enum: ["light", "dark"]
                   example: "light"
                 layout:
                   type: string
-                  enum: ['grid', 'list']
+                  enum: ["grid", "list"]
                   example: "grid"
                 integrate:
                   type: boolean
                   example: true
                 size:
                   type: string
-                  enum: ['small', 'medium', 'large']
+                  enum: ["small", "medium", "large"]
                   example: "medium"
                 font:
                   type: string
@@ -127,7 +131,7 @@ paths:
                         type: integer
                         example: 200
                   data:
-                    $ref: '#/components/schemas/Theme'
+                    $ref: "#/components/schemas/Theme"
         400:
           description: Validation error
         401:
@@ -163,7 +167,7 @@ paths:
                         type: integer
                         example: 200
                   data:
-                    $ref: '#/components/schemas/Theme'
+                    $ref: "#/components/schemas/Theme"
         404:
           description: Theme not found
         401:
@@ -199,7 +203,7 @@ paths:
                         type: integer
                         example: 200
                   data:
-                    $ref: '#/components/schemas/Theme'
+                    $ref: "#/components/schemas/Theme"
         404:
           description: Theme not found
         401:

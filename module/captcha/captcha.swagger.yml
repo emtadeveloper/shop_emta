@@ -1,3 +1,7 @@
+tags:
+  - name: Captcha
+    description: Endpoints for CAPTCHA generation and validation
+
 paths:
   /api/v1/captcha/{id}:
     get:
