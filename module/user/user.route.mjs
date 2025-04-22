@@ -10,7 +10,7 @@ import {
     me
 } from "./user.controller.mjs";
 import { uploadAvatar, } from '../../common/util/multer.mjs'
-import Auth from '../../common/middleware/AuthMiddleware.mjs'
+import Auth from '../../common/middleware/authMiddleware.mjs'
 
 const router = express.Router();
 

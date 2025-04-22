@@ -9,6 +9,26 @@ export const messages = {
         en: "Theme updated successfully",
         status: 200,
     },
+    successUpdate: {
+        fa: "  موفقیت به‌روزرسانی شد",
+        en: " updated successfully",
+        status: 200,
+    },
+    NotAccessDeleted: {
+        fa: "شما اجازه حذف این رکورد را ندارید",
+        en: " Not Access to deleted Record ",
+        status: 200,
+    },
+    NotAccessUpdated: {
+        fa: "شما اجازه ویرایش این رکورد را ندارید",
+        en: " Not Access to Updated Record ",
+        status: 200,
+    },
+    successDelete: {
+        fa: "  موفقیت حذف شد",
+        en: " deleted successfully",
+        status: 200,
+    },
     themeNotFound: {
         fa: "تم مورد نظر پیدا نشد",
         en: "Theme not found",
@@ -43,6 +63,106 @@ export const messages = {
         fa: "لیست شهرها با موفقیت دریافت شد",
         en: "Cities fetched successfully",
         status: 200
+    },
+    NotAccess: {
+        fa: "شما اجازه دستری به این مسیر را ندارید",
+        en: "Not Acess permission",
+        status: 403
+    },
+    roleNameRequired: {
+        fa: "نام نقش ضروری است",
+        en: "Role name is required",
+        status: 400,
+    },
+    roleNameMinLength: {
+        fa: "نام نقش باید حداقل ۳ کاراکتر باشد",
+        en: "Role name must be at least 3 characters",
+        status: 400,
+    },
+    roleNameMaxLength: {
+        fa: "نام نقش نباید بیشتر از ۵۰ کاراکتر باشد",
+        en: "Role name must be at most 50 characters",
+        status: 400,
+    },
+    permissionsRequired: {
+        fa: "مجوزها ضروری هستند",
+        en: "Permissions are required",
+        status: 400,
+    },
+    permissionsMinLength: {
+        fa: "باید حداقل یک مجوز مشخص کنید",
+        en: "At least one permission is required",
+        status: 400,
+    },
+    permissionsMaxLength: {
+        fa: "تعداد مجوزها نباید بیشتر از ۱۰ باشد",
+        en: "No more than 10 permissions allowed",
+        status: 400,
+    },
+    permissionsPositive: {
+        fa: "مجوزها باید اعداد مثبت باشند",
+        en: "Permissions must be positive numbers",
+        status: 400,
+    },
+    successRole: {
+        fa: "ساخت نقش جدید با موفقیت انجام شد",
+        en: "success Role create",
+        status: 201
+    },
+    noChangesDetected: {
+        fa: "هیچ تغییری در داده‌ها شناسایی نشد",
+        en: "No changes detected in the data",
+        status: 400
+    },
+    invalidPermissions: {
+        fa: "برخی از مجوزها نامعتبر هستند",
+        en: "Some permissions are invalid",
+        status: 400
+    },
+    roleNotFound: {
+        fa: "نقش مورد نظر پیدا نشد",
+        en: "Role not found",
+        status: 404
+    },
+    invalidRoleId: {
+        fa: "شناسه نقش معتبر نیست",
+        en: "Invalid role ID",
+        status: 400
+    },
+    missingRoleData: {
+        fa: "اطلاعات لازم برای به‌روزرسانی نقش ناقص است",
+        en: "Missing required role data",
+        status: 400
+    },
+    successFetchRoles: {
+        fa: "لیست نقش‌ها با موفقیت دریافت شد",
+        en: "Roles fetched successfully",
+        status: 200
+    },
+    invalidRoleId: {
+        fa: "شناسه نقش معتبر نیست",
+        en: "Invalid role ID",
+        status: 400
+    },
+    missingRoleData: {
+        fa: "نام نقش و مجوزها الزامی هستند",
+        en: "Role name and permissions are required",
+        status: 400
+    },
+    invalidPermissions: {
+        fa: "برخی از مجوزها نامعتبر هستند",
+        en: "Some permissions are invalid",
+        status: 400
+    },
+    duplicateRoleName: {
+        fa: "نام نقش تکراری هست",
+        en: " duplicate RoleName are invalid",
+        status: 400
+    },
+    roleNotFound: {
+        fa: "نقش مورد نظر پیدا نشد",
+        en: "Role not found",
+        status: 404
     },
     readFileError: {
         fa: "خطا در خواندن فایل",

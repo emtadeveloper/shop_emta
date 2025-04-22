@@ -6,9 +6,6 @@ export default {
     ROLES: Object.freeze({
         USER: "USER",
         ADMIN: "ADMIN",
-        WRITER: "WRITER",
-        TEACHER: "TEACHER",
-        SUPPLIER: "SUPPLIER",
     }),
 
     PERMISSIONS: Object.freeze({

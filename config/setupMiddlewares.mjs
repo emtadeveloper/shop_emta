@@ -3,7 +3,7 @@ import morgan from "morgan"
 import passport from "passport"
 
 import swaggerMiddleware from "../common/middleware/swaggerMiddleware.mjs"
-import { ErrorHandler, NotFoundError } from "../common/middleware/ErrorMiddleware.mjs"
+import { ErrorHandler, NotFoundError } from "../common/middleware/errorMiddleware.mjs"
 import setupRoutes from "./setupRoutes.mjs"
 import setupPassport from "./setupPassport.mjs"
 

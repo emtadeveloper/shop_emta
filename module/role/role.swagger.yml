@@ -1,0 +1,211 @@
+tags:
+  - name: Role
+    description: Endpoints for role management and permissions assignment
+
+paths:
+  /api/v1/role:
+    post:
+      tags:
+        - Role
+      summary: Create a new role
+      description: Creates a new role with the specified name and associated permissions.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - roleName
+                - permissions
+              properties:
+                roleName:
+                  type: string
+                  example: "admin"
+                permissions:
+                  type: array
+                  items:
+                    type: number
+                  example: [1, 2, 3]
+      responses:
+        "201":
+          description: Role created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Role created successfully
+                  data:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "60d0fe4f5311236168a109ca"
+                      roleName:
+                        type: string
+                        example: "admin"
+                      permissions:
+                        type: array
+                        items:
+                          type: number
+                        example: [1, 2, 3]
+
+    get:
+      tags:
+        - Role
+      summary: Retrieve all Role
+      description: Fetches a list of all Role along with their associated permissions.
+      responses:
+        "200":
+          description: A list of Role
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Role retrieved successfully
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          example: "60d0fe4f5311236168a109ca"
+                        roleName:
+                          type: string
+                          example: "admin"
+                        permissions:
+                          type: array
+                          items:
+                            type: number
+                          example: [1, 2, 3]
+
+  /api/v1/role/{id}:
+    get:
+      tags:
+        - Role
+      summary: Retrieve a role by ID
+      description: Fetches the details of a specific role using its unique identifier.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique identifier of the role
+          schema:
+            type: string
+            example: "60d0fe4f5311236168a109ca"
+      responses:
+        "200":
+          description: Role details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Role retrieved successfully
+                  data:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "60d0fe4f5311236168a109ca"
+                      roleName:
+                        type: string
+                        example: "admin"
+                      permissions:
+                        type: array
+                        items:
+                          type: number
+                        example: [1, 2, 3]
+
+    put:
+      tags:
+        - Role
+      summary: Update a role by ID
+      description: Updates the name and permissions of an existing role identified by its unique ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique identifier of the role to be updated
+          schema:
+            type: string
+            example: "60d0fe4f5311236168a109ca"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - roleName
+                - permissions
+              properties:
+                roleName:
+                  type: string
+                  example: "superadmin"
+                permissions:
+                  type: array
+                  items:
+                    type: number
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Role updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Role updated successfully
+                  data:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "60d0fe4f5311236168a109ca"
+                      roleName:
+                        type: string
+                        example: "superadmin"
+                      permissions:
+                        type: array
+                        items:
+                          type: number
+                        example: [1, 2, 3, 4]
+
+    delete:
+      tags:
+        - Role
+      summary: Delete a role by ID
+      description: This endpoint deletes a specific role by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the role to be deleted
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Role deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Role deleted successfully
+                  data:
+                    type: object
+                    example: {}
