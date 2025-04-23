@@ -60,10 +60,7 @@ const categorySchema = new mongoose.Schema({
     },
     icon: {
         type: iconSchema,
-        default: {
-            imageUrl: '',
-            public_id: '',
-        },
+        default: null
     },
     filters: {
         type: [filterSubSchema],

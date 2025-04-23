@@ -87,6 +87,7 @@ components:
           type: string
           format: binary
           description: "Icon image file to upload"
+          nullable: true
         description:
           type: string
           example: "دسته‌بندی لباس زنانه"

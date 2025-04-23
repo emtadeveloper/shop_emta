@@ -1,22 +1,17 @@
 import * as CategoryService from './category.service.mjs';
 import { createLocalizedError, createLocalizedSuccess } from "../../common/locale/localizationHelper.mjs";
 import { parseJsonFields } from "../../common/util/parseJsonFields.mjs"
-import cloudinary from "../../config/cloudinary.mjs";
 import mongoose from 'mongoose';
+import { deleteInvalidPropertyObject } from '../../common/util/deleteInvalidPropertyObject.mjs';
 
 export const createCategory = async (req, res, next) => {
     try {
-        const body = parseJsonFields(req.body)
 
-        if (!req.file) {
-            throw createLocalizedError("avatarRequired");
-        }
+        const parseFields = parseJsonFields(req.body);
 
-        if (req.user.icon?.public_id) {
-            await cloudinary.uploader.destroy(user.avatar.public_id);
-        }
+        const body = deleteInvalidPropertyObject({ ...parseJsonFields(parseFields), file: req.file })
 
-        const Category = await CategoryService.createCategory({ ...body, file: req.file });
+        const Category = await CategoryService.createCategory(body);
 
         return createLocalizedSuccess(res, "successCreateCategory", Category)
     } catch (err) {
@@ -51,6 +46,7 @@ export const updateCategory = async (req, res, next) => {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             throw createLocalizedError('invalidCategoryId')
         }
+
         const body = parseJsonFields(req.body)
 
         const updated = await CategoryService.updateCategory(id, { ...body, file: req.file });

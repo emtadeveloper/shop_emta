@@ -1,18 +1,23 @@
 import Category from './category.model.mjs';
 import { uploadSingleToCloudinary } from "../../common/util/multer.mjs"
 import { createLocalizedError } from '../../common/locale/localizationHelper.mjs';
+import cloudinary from '../../config/cloudinary.mjs';
 
 export const createCategory = async ({ file, ...data }) => {
     try {
 
-        const { imageUrl, public_id } = await uploadSingleToCloudinary(file, "icons");
 
-        const category = await Category.create({
-            ...data,
-            icon: {
+        if (file) {
+            const { imageUrl, public_id } = await uploadSingleToCloudinary(file, "icons");
+            data.icon = {
                 imageUrl, public_id
             }
+        }
+
+        const category = await Category.create({
+            ...data
         });
+
 
         if (!category) {
             throw createLocalizedError("userNotFound");
@@ -41,10 +46,22 @@ export const getCategoryById = async (id) => {
     }
 };
 
-export const updateCategory = async (id, { file, ...updates }) => {
+export const updateCategory = async (id, updates) => {
     try {
 
+        const category = await Category.findOne({ _id: id })
+
+        if (!updates.file && category?.icon?.public_id) {
+            await cloudinary.uploader.destroy(category.icon.public_id);
+            delete updates.icon
+        }
+
+        if (!updates?.parent) {
+            updates.parent = null
+        }
+
         const updated = await Category.findByIdAndUpdate(id, { ...updates }, { new: true }).lean();
+
 
         if (!updated) {
             throw createLocalizedError("userNotFound");
