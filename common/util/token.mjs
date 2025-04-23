@@ -4,7 +4,7 @@ import redis from "../../config/db/db.redis.mjs";
 import { hashPasswordBcrypt } from "./password.mjs";
 
 export const generateAccessToken = (user) => {
-    return jwt.sign({ id: user._id, roleName: user.role.roleName, permissions: user.role.permissions }, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1h' });
+    return jwt.sign({ id: user._id, roleName: user.role.roleName, permissions: user.role.permissions }, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '5h' });
 };
 
 export const generateRefreshToken = async (user) => {

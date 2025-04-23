@@ -19,6 +19,66 @@ export const messages = {
         en: " Not Access to deleted Record ",
         status: 200,
     },
+    categoryNotFound: {
+        fa: 'دسته‌بندی مورد نظر پیدا نشد',
+        en: 'Category not found',
+        status: 404,
+    },
+    successCreateCategory: {
+        fa: 'دسته‌بندی با موفقیت ایجاد شد',
+        en: 'Category created successfully',
+        status: 201,
+    },
+    successUpdateCategory: {
+        fa: 'دسته‌بندی با موفقیت به‌روزرسانی شد',
+        en: 'Category updated successfully',
+        status: 200,
+    },
+    successDeleteCategory: {
+        fa: 'دسته‌بندی با موفقیت حذف شد',
+        en: 'Category deleted successfully',
+        status: 200,
+    },
+    notAllowedToDelete: {
+        fa: 'شما اجازه حذف این دسته‌بندی را ندارید',
+        en: 'You are not allowed to delete this category',
+        status: 403,
+    },
+    categoryCreated: {
+        fa: "دسته‌بندی با موفقیت ایجاد شد",
+        en: "Category created successfully",
+        status: 201,
+    },
+    categoryUpdated: {
+        fa: "دسته‌بندی با موفقیت به‌روزرسانی شد",
+        en: "Category updated successfully",
+        status: 200,
+    },
+    categoryDeleted: {
+        fa: "دسته‌بندی با موفقیت حذف شد",
+        en: "Category deleted successfully",
+        status: 200,
+    },
+    categoryNotFound: {
+        fa: "دسته‌بندی مورد نظر پیدا نشد",
+        en: "Category not found",
+        status: 404,
+    },
+    categorySlugExists: {
+        fa: "نامک وارد شده قبلاً استفاده شده است",
+        en: "Slug already exists",
+        status: 400,
+    },
+    invalidCategoryId: {
+        fa: "شناسه دسته‌بندی معتبر نیست",
+        en: "Invalid category ID",
+        status: 400,
+    },
+    noAccessToDeleteCategory: {
+        fa: "شما اجازه حذف این دسته‌بندی را ندارید",
+        en: "You are not allowed to delete this category",
+        status: 403,
+    },
     NotAccessUpdated: {
         fa: "شما اجازه ویرایش این رکورد را ندارید",
         en: " Not Access to Updated Record ",

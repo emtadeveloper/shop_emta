@@ -17,7 +17,7 @@ export const createAddressController = async (req, res, next) => {
         return createLocalizedSuccess(res, 'successCreateAddress', data);
 
     } catch (error) {
-        next(next)
+        next(error)
     }
 };
 
@@ -38,7 +38,7 @@ export const updateAddressController = async (req, res, next) => {
         return createLocalizedSuccess(res, 'successUpdateAddress', data);
 
     } catch (error) {
-        next(next)
+        next(error)
     }
 };
 
@@ -56,7 +56,7 @@ export const deleteAddressController = async (req, res, next) => {
         return createLocalizedSuccess(res, 'successDeleteAddress');
 
     } catch (error) {
-        next(next)
+        next(error)
     }
 }
 

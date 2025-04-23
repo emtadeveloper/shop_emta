@@ -15,25 +15,26 @@ const storage = multer.memoryStorage();
 
 const pictureMaxSize = 2 * 1000 * 1000; // 2MB
 
-const fileFilter = (req, file, cb) => {
+const avatarExtensions = [".jpg", ".jpeg", ".png", ".gif"];
+const iconExtensions = [...avatarExtensions, ".svg"];
+
+const fileFilter = (allowedExtensions) => (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
-    const mimetypes = [".jpg", ".jpeg", ".png", ".gif"];
-
-    if (!mimetypes.includes(ext)) {
-        return cb(createLocalizedError("invalidAvatarType"));
+    if (!allowedExtensions.includes(ext)) {
+        return cb(createLocalizedError("invalidFileType"));
     }
-
     return cb(null, true);
 };
 
-export const uploadFile = multer({
+export const uploadFile = (allowedExtensions) => multer({
     storage,
-    fileFilter,
+    fileFilter: fileFilter(allowedExtensions),
     limits: { fileSize: pictureMaxSize }
 });
 
 export const uploadAvatar = (req, res, next) => {
-    uploadFile.single("avatar")(req, res, (err) => {
+    const uploadAvatarFile = uploadFile(avatarExtensions);
+    uploadAvatarFile.single("avatar")(req, res, (err) => {
         if (err) {
             if (err.code === "LIMIT_FILE_SIZE") {
                 return next(createLocalizedError("avatarTooLarge"));
@@ -44,14 +45,28 @@ export const uploadAvatar = (req, res, next) => {
     });
 };
 
-// Single Cloudinary
+export const uploadIcon = (req, res, next) => {
+    const uploadIconFile = uploadFile(iconExtensions);
+    uploadIconFile.single("icon")(req, res, (err) => {
+        if (err) {
+            if (err.code === "LIMIT_FILE_SIZE") {
+                return next(createLocalizedError("iconTooLarge"));
+            }
+            return next(err);
+        }
+        next();
+    });
+};
 
 export const uploadSingleToCloudinary = (file, folder = "uploads") => {
     return new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
             { folder },
             (error, result) => {
-                if (error) return reject(createLocalizedError("cloudinaryUploadFailed"));
+                if (error) {
+                    console.log("خطای آپلود به Cloudinary: ", error);
+                    return reject(createLocalizedError("cloudinaryUploadFailed"));
+                }
                 resolve({
                     imageUrl: result.secure_url,
                     public_id: result.public_id,
@@ -62,17 +77,15 @@ export const uploadSingleToCloudinary = (file, folder = "uploads") => {
     });
 };
 
-// Multi Cloudinary
-
 export const uploadMultipleToCloudinary = async (files, folder = "uploads") => {
     try {
         return await Promise.all(
             files.map((file) => uploadSingleToCloudinary(file, folder))
         );
     } catch (err) {
+        console.log("خطای آپلود چندگانه به Cloudinary: ", err);
         throw createLocalizedError("cloudinaryUploadFailed");
     }
 };
 
-
-export default { uploadAvatar, uploadSingleToCloudinary, uploadMultipleToCloudinary }
+export default { uploadAvatar, uploadIcon, uploadSingleToCloudinary, uploadMultipleToCloudinary };
