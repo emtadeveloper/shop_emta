@@ -3,7 +3,7 @@ import { createUpdateFields } from "../../common/util/updatedFields.mjs"
 import { uploadSingleToCloudinary } from "../../common/util/multer.mjs"
 import cloudinary from "../../config/cloudinary.mjs";
 
-import UserModel from "./user.model.mjs"
+import UserModel from "./profile.model.mjs"
 
 export const createAddress = async (addressData, userId) => {
     try {

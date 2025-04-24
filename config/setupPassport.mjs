@@ -1,5 +1,5 @@
 import LocalStrategy from 'passport-local';
-import UserModel from '../module/user/user.model.mjs';
+import UserModel from '../module/profile/profile.model.mjs';
 import { getCaptcha, deleteCaptcha } from '../module/captcha/captcha.model.mjs';
 import { deleteOtp, getOtp } from '../module/auth/auth.model.mjs';
 

@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 import { createLocalizedError, createLocalizedSuccess } from "../../common/locale/localizationHelper.mjs";
-import userService from "./user.service.mjs";
+import userService from "./profile.service.mjs";
 import {
     createAddressValidation,
     updateAddressValidation,
     updateProfileValidationSchema
-} from "./user.validator.mjs";
+} from "./profile.validator.mjs";
 
 export const createAddressController = async (req, res, next) => {
     try {

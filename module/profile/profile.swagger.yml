@@ -1,5 +1,5 @@
 tags:
-  - name: User
+  - name: profile
     description: Operations related to user profiles, addresses, and avatars
 
 components:
@@ -205,10 +205,10 @@ components:
         message:
           $ref: "#/components/schemas/MessageObject"
 
-/api/v1/user/address:
+/api/v1/profile/address:
   get:
     summary: Retrieve all user addresses
-    tags: [User]
+    tags: [profile]
     description: Get the list of all addresses saved for the authenticated user
     responses:
       200:
@@ -219,7 +219,7 @@ components:
               $ref: "#/components/schemas/UserAddressesResponse"
   post:
     summary: Create a new user address
-    tags: [User]
+    tags: [profile]
     description: Create a new address for the authenticated user
     requestBody:
       required: true
@@ -235,7 +235,7 @@ components:
             schema:
               $ref: "#/components/schemas/UserAddressesResponse"
 
-/api/v1/user/address/{id}:
+/api/v1/profile/address/{id}:
   parameters:
     - name: id
       in: path
@@ -245,7 +245,7 @@ components:
       description: ID of the address
   get:
     summary: Retrieve a specific user address
-    tags: [User]
+    tags: [profile]
     description: Get the details of a single address by its ID
     responses:
       200:
@@ -256,7 +256,7 @@ components:
               $ref: "#/components/schemas/UserAddressResponse"
   put:
     summary: Update a specific user address
-    tags: [User]
+    tags: [profile]
     description: Update the information of a specific address based on its ID
     requestBody:
       required: true
@@ -273,7 +273,7 @@ components:
               $ref: "#/components/schemas/UserAddressesResponse"
   delete:
     summary: Delete a specific user address
-    tags: [User]
+    tags: [profile]
     description: Delete a specific address based on its ID
     responses:
       200:
@@ -283,10 +283,10 @@ components:
             schema:
               $ref: "#/components/schemas/GenericSuccessMessage"
 
-/api/v1/user:
+/api/v1/profile:
   get:
     summary: Get user profile
-    tags: [User]
+    tags: [profile]
     description: Get the authenticated user's profile using access token
     responses:
       200:
@@ -297,7 +297,7 @@ components:
               $ref: "#/components/schemas/UserProfileResponse"
   put:
     summary: Update user profile
-    tags: [User]
+    tags: [profile]
     description: Update one or more fields in the user’s profile
     requestBody:
       required: true
@@ -313,10 +313,10 @@ components:
             schema:
               $ref: "#/components/schemas/UserProfileResponse"
 
-/api/v1/user/avatar:
+/api/v1/profile/avatar:
   post:
     summary: Upload or update user avatar
-    tags: [User]
+    tags: [profile]
     description: Upload a new avatar image for the authenticated user
     requestBody:
       required: true
@@ -338,7 +338,7 @@ components:
               $ref: "#/components/schemas/AvatarResponse"
   get:
     summary: Get user avatar
-    tags: [User]
+    tags: [profile]
     description: Retrieve the current avatar information for the authenticated user
     responses:
       200:
@@ -349,7 +349,7 @@ components:
               $ref: "#/components/schemas/AvatarResponse"
   delete:
     summary: Delete user avatar
-    tags: [User]
+    tags: [profile]
     description: Remove the current avatar for the authenticated user
     responses:
       200:

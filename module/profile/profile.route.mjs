@@ -8,7 +8,7 @@ import {
     getUserAvatarController,
     deleteUserAvatarController,
     me
-} from "./user.controller.mjs";
+} from "./profile.controller.mjs";
 import { uploadAvatar, } from '../../common/util/multer.mjs'
 import Auth from '../../common/middleware/authMiddleware.mjs'
 

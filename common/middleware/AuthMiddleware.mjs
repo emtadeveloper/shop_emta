@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import UserModel from "../../module/user/user.model.mjs";
+import UserModel from "../../module/profile/profile.model.mjs";
 import { createLocalizedError } from "../locale/localizationHelper.mjs";
 
 const getToken = (headers) => {

@@ -1,5 +1,5 @@
 import { createLocalizedError, } from "../../common/locale/localizationHelper.mjs"
-import UserModel from '../user/user.model.mjs'
+import UserModel from '../profile/profile.model.mjs'
 import RoleModel from '../role/role.model.mjs'
 import { generateAccessToken, generateRefreshToken } from "../../common/util/token.mjs";
 import speakeasy from 'speakeasy'
