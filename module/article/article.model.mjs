@@ -1,15 +1,14 @@
 import mongoose from 'mongoose';
-const { Schema } = mongoose;
 
-const ApprovalStepSchema = new Schema({
+const ApprovalStepSchema = new mongoose.Schema({
     role: { type: String, required: true },
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     decision: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
     comment: { type: String, trim: true },
     decidedAt: { type: Date }
 }, { _id: false });
 
-export const ApprovalProcessSchema = new Schema({
+export const ApprovalProcessSchema = new mongoose.Schema({
     status: { type: String, enum: ['draft', 'pending', 'approved', 'rejected'], default: 'draft' },
     steps: { type: [ApprovalStepSchema], default: [] },
     currentStep: { type: Number, default: 0 },
@@ -17,12 +16,12 @@ export const ApprovalProcessSchema = new Schema({
     completedAt: { type: Date }
 }, { _id: false });
 
-const imageSchema = new Schema({
+const imageSchema = new mongoose.Schema({
     imageUrl: { type: String, required: true },
     public_id: { type: String, required: true }
 });
 
-const videoSchema = new Schema({
+const videoSchema = new mongoose.Schema({
     videoUrl: { type: String, required: true },
     public_id: { type: String, required: true },
     duration: { type: Number, required: true },
@@ -30,7 +29,7 @@ const videoSchema = new Schema({
     height: { type: Number, required: true }
 });
 
-export const ContentSchema = new Schema({
+export const ContentSchema = new mongoose.Schema({
     type: { type: String, enum: ['text', 'image', 'video'], required: true },
 
     content: {
@@ -45,7 +44,7 @@ export const ContentSchema = new Schema({
     },
 
     media: {
-        type: Schema.Types.Mixed,
+        type: mongoose.Schema.Types.Mixed,
         validate: {
             validator: function (val) {
                 return (this.type === 'image' && val instanceof imageSchema) ||
@@ -63,12 +62,12 @@ export const ContentSchema = new Schema({
     order: { type: Number, index: true }
 }, { timestamps: true });
 
-export const ArticleSchema = new Schema({
+export const ArticleSchema = new mongoose.Schema({
     title: { type: String, required: true, trim: true },
     slug: { type: String, required: true, unique: true, lowercase: true, trim: true },
     excerpt: { type: String, trim: true },
-    author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
+    author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
     tags: [{ type: String, trim: true }],
     status: { type: String, enum: ['draft', 'pending', 'published', 'archived'], default: 'draft' },
 
@@ -80,12 +79,8 @@ export const ArticleSchema = new Schema({
     contents: { type: [ContentSchema], default: [] },
     featuredImage: { type: imageSchema, required: false },
     viewsCount: { type: Number, default: 0, min: 0 }
-}, { timestamps: true });
+}, { timestamps: true, versionKey: false });
 
-ArticleSchema.index(
-    { title: 'text', excerpt: 'text' },
-    { name: 'TextIndex' }
-);
 
 ArticleSchema.pre('validate', function (next) {
     if (!this.slug && this.title) {
@@ -98,10 +93,4 @@ ArticleSchema.pre('validate', function (next) {
     next();
 });
 
-export const Article = mongoose.model('Article', ArticleSchema);
-
-if (process.env.NODE_ENV === 'development') {
-    Article.syncIndexes()
-        .then(() => console.log('Indexes synced'))
-        .catch(err => console.error('Index sync error', err));
-}
+export default mongoose.model('Article', ArticleSchema);

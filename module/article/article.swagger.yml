@@ -1,14 +1,3 @@
-openapi: 3.0.3
-info:
-  title: Article CMS API
-  version: 1.0.2
-  description: Backend endpoint for creating and managing articles with mixed text, image and video blocks. Files are uploaded via Multer and stored in Cloudinary server-side.
-servers:
-  - url: https://api.example.com
-    description: Production
-  - url: https://staging.api.example.com
-    description: Staging
-
 tags:
   - name: Article
     description: Operations for creating, retrieving and managing articles
@@ -20,7 +9,7 @@ components:
       properties:
         fa:
           type: string
-          example: "عملیات با موفقیت انجام شد"
+          example: "Operation completed successfully"
         en:
           type: string
           example: "Operation completed successfully"
@@ -37,7 +26,7 @@ components:
           example: text
         content:
           type: string
-          example: "این یک پاراگراف از مقاله است."
+          example: "This is a paragraph of the article."
         order:
           type: integer
           example: 0
@@ -56,16 +45,16 @@ components:
         file:
           type: string
           format: binary
-          description: تصویر بخش (آپلود توسط کاربر)
+          description: Image block (uploaded by user)
         meta:
           type: object
           properties:
             caption:
               type: string
-              example: "کاور بخش"
+              example: "Section cover"
             altText:
               type: string
-              example: "متن جایگزین تصویر"
+              example: "Alternative text for image"
         order:
           type: integer
           example: 1
@@ -84,16 +73,16 @@ components:
         file:
           type: string
           format: binary
-          description: ویدیوی بخش (آپلود توسط کاربر)
+          description: Video block (uploaded by user)
         meta:
           type: object
           properties:
             caption:
               type: string
-              example: "ویدیوی معرفی"
+              example: "Introduction video"
             altText:
               type: string
-              example: "متن جایگزین ویدیو"
+              example: "Alternative text for video"
         order:
           type: integer
           example: 2
@@ -107,11 +96,7 @@ components:
       properties:
         title:
           type: string
-          example: "راهنمای کامل ساخت بلاگ با Node.js"
-        author:
-          type: string
-          format: uuid
-          example: "60d5ec49f9c4b524d8e2f9f1"
+          example: "Complete Guide to Creating a Blog with Node.js"
         categories:
           type: array
           items:
@@ -125,11 +110,10 @@ components:
           example: ["Node.js", "Express"]
         excerpt:
           type: string
-          example: "چکیده‌ی مقاله..."
+          example: "Article excerpt..."
         featuredImage:
           type: string
           format: binary
-          description: تصویر شاخص مقاله (آپلود توسط کاربر)
         contents:
           type: array
           items:
@@ -139,7 +123,6 @@ components:
               - $ref: "#/components/schemas/ContentVideoInput"
       required:
         - title
-        - author
         - contents
       encoding:
         contents:
@@ -159,8 +142,6 @@ components:
         slug:
           type: string
         excerpt:
-          type: string
-        author:
           type: string
         categories:
           type: array
@@ -214,21 +195,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Article"
-        "400":
-          description: Validation error
+    get:
+      tags:
+        - Article
+      summary: Create new article with text, image and video blocks
+      responses:
+        "201":
+          description: Article created successfully
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: false
-                  message:
-                    $ref: "#/components/schemas/MessageObject"
-        "500":
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MessageObject"
+                $ref: "#/components/schemas/Article"

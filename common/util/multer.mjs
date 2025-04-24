@@ -47,6 +47,19 @@ export const uploadAvatar = (req, res, next) => {
     });
 };
 
+export const uploadFeaturedImage = (req, res, next) => {
+    const uploadAvatarFile = uploadFile(avatarExtensions);
+    uploadAvatarFile.single("featuredImage")(req, res, (err) => {
+        if (err) {
+            if (err.code === "LIMIT_FILE_SIZE") {
+                return next(createLocalizedError("avatarTooLarge"));
+            }
+            return next(err);
+        }
+        next();
+    });
+};
+
 export const uploadIcon = (req, res, next) => {
     const uploadIconFile = uploadFile(iconExtensions);
     uploadIconFile.single("icon")(req, res, (err) => {
@@ -135,5 +148,6 @@ export const uploadVideoToCloudinary = (file, folder = "videos") => {
 export default {
     uploadAvatar, uploadIcon, uploadSingleToCloudinary,
     uploadMultipleToCloudinary, uploadVideoFile, uploadVideo,
-    uploadVideoToCloudinary
+    uploadVideoToCloudinary,
+    uploadFeaturedImage
 };
