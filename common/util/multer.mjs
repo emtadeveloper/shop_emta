@@ -17,6 +17,8 @@ const pictureMaxSize = 2 * 1000 * 1000; // 2MB
 
 const avatarExtensions = [".jpg", ".jpeg", ".png", ".gif"];
 const iconExtensions = [...avatarExtensions, ".svg"];
+const videoExtensions = [".mp4", ".mov", ".avi", ".mkv", ".webm"];
+const videoMaxSize = 100 * 1000 * 1000; // 100MB
 
 const fileFilter = (allowedExtensions) => (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
@@ -88,4 +90,50 @@ export const uploadMultipleToCloudinary = async (files, folder = "uploads") => {
     }
 };
 
-export default { uploadAvatar, uploadIcon, uploadSingleToCloudinary, uploadMultipleToCloudinary };
+export const uploadVideoFile = () =>
+    multer({
+        storage,
+        fileFilter: fileFilter(videoExtensions),
+        limits: { fileSize: videoMaxSize },
+    });
+
+export const uploadVideo = (req, res, next) => {
+    const upload = uploadVideoFile();
+    upload.single("video")(req, res, (err) => {
+        if (err) {
+            if (err.code === "LIMIT_FILE_SIZE") {
+                return next(createLocalizedError("videoTooLarge"));
+            }
+            return next(err);
+        }
+        next();
+    });
+};
+
+export const uploadVideoToCloudinary = (file, folder = "videos") => {
+    return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+            {
+                folder,
+                resource_type: "video",
+            },
+            (error, result) => {
+                if (error) {
+                    console.log("خطای آپلود ویدیو به Cloudinary:", error);
+                    return reject(createLocalizedError("cloudinaryUploadFailed"));
+                }
+                resolve({
+                    videoUrl: result.secure_url,
+                    public_id: result.public_id,
+                });
+            }
+        );
+        bufferToStream(file.buffer).pipe(stream);
+    });
+};
+
+export default {
+    uploadAvatar, uploadIcon, uploadSingleToCloudinary,
+    uploadMultipleToCloudinary, uploadVideoFile, uploadVideo,
+    uploadVideoToCloudinary
+};

@@ -1,0 +1,234 @@
+openapi: 3.0.3
+info:
+  title: Article CMS API
+  version: 1.0.2
+  description: Backend endpoint for creating and managing articles with mixed text, image and video blocks. Files are uploaded via Multer and stored in Cloudinary server-side.
+servers:
+  - url: https://api.example.com
+    description: Production
+  - url: https://staging.api.example.com
+    description: Staging
+
+tags:
+  - name: Article
+    description: Operations for creating, retrieving and managing articles
+
+components:
+  schemas:
+    MessageObject:
+      type: object
+      properties:
+        fa:
+          type: string
+          example: "عملیات با موفقیت انجام شد"
+        en:
+          type: string
+          example: "Operation completed successfully"
+        status:
+          type: integer
+          example: 200
+
+    ContentTextInput:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [text]
+          example: text
+        content:
+          type: string
+          example: "این یک پاراگراف از مقاله است."
+        order:
+          type: integer
+          example: 0
+      required:
+        - type
+        - content
+        - order
+
+    ContentImageInput:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [image]
+          example: image
+        file:
+          type: string
+          format: binary
+          description: تصویر بخش (آپلود توسط کاربر)
+        meta:
+          type: object
+          properties:
+            caption:
+              type: string
+              example: "کاور بخش"
+            altText:
+              type: string
+              example: "متن جایگزین تصویر"
+        order:
+          type: integer
+          example: 1
+      required:
+        - type
+        - file
+        - order
+
+    ContentVideoInput:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [video]
+          example: video
+        file:
+          type: string
+          format: binary
+          description: ویدیوی بخش (آپلود توسط کاربر)
+        meta:
+          type: object
+          properties:
+            caption:
+              type: string
+              example: "ویدیوی معرفی"
+            altText:
+              type: string
+              example: "متن جایگزین ویدیو"
+        order:
+          type: integer
+          example: 2
+      required:
+        - type
+        - file
+        - order
+
+    ArticleCreate:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "راهنمای کامل ساخت بلاگ با Node.js"
+        author:
+          type: string
+          format: uuid
+          example: "60d5ec49f9c4b524d8e2f9f1"
+        categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          example: ["60d5f0c5a2e8b4251c9e72fa"]
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["Node.js", "Express"]
+        excerpt:
+          type: string
+          example: "چکیده‌ی مقاله..."
+        featuredImage:
+          type: string
+          format: binary
+          description: تصویر شاخص مقاله (آپلود توسط کاربر)
+        contents:
+          type: array
+          items:
+            oneOf:
+              - $ref: "#/components/schemas/ContentTextInput"
+              - $ref: "#/components/schemas/ContentImageInput"
+              - $ref: "#/components/schemas/ContentVideoInput"
+      required:
+        - title
+        - author
+        - contents
+      encoding:
+        contents:
+          contentType: application/json
+        featuredImage:
+          contentType: image/jpeg, image/png
+        "contents[].file":
+          contentType: image/jpeg, image/png, video/mp4
+
+    Article:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        slug:
+          type: string
+        excerpt:
+          type: string
+        author:
+          type: string
+        categories:
+          type: array
+          items:
+            type: string
+        tags:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+        approval:
+          type: object
+        contents:
+          type: array
+          items:
+            oneOf:
+              - $ref: "#/components/schemas/ContentTextInput"
+              - $ref: "#/components/schemas/ContentImageInput"
+              - $ref: "#/components/schemas/ContentVideoInput"
+        featuredImage:
+          type: object
+          properties:
+            public_id:
+              type: string
+            imageUrl:
+              type: string
+        viewsCount:
+          type: integer
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+
+paths:
+  /api/v1/articles:
+    post:
+      tags:
+        - Article
+      summary: Create new article with text, image and video blocks
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ArticleCreate"
+      responses:
+        "201":
+          description: Article created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Article"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    $ref: "#/components/schemas/MessageObject"
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageObject"
