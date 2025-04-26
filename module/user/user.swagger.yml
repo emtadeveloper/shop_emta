@@ -1,0 +1,132 @@
+tags:
+  - name: users
+    description: Operations related to user management and roles
+
+components:
+  schemas:
+    UserSummary:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "60d0fe4f5311236168a109cb"
+        username:
+          type: string
+          example: "alirezayi"
+        phone:
+          type: string
+          example: "09154144503"
+        email:
+          type: string
+          example: "emta137671@gmail.com"
+        role:
+          $ref: "#/components/schemas/Role"
+
+    UsersListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          $ref: "#/components/schemas/MessageObject"
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserSummary"
+
+    ChangeUserRoleInput:
+      type: object
+      required: [roleName, permissions]
+      properties:
+        roleName:
+          type: string
+          example: "admin"
+        permissions:
+          type: array
+          items:
+            type: integer
+          example: [1, 2, 3]
+
+/api/v1/users:
+  get:
+    summary: Retrieve list of users (with optional search filters)
+    tags: [users]
+    description: Get a list of users based on optional search criteria such as first name, last name, phone or email.
+    parameters:
+      - name: firstName
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter users by first name (partial match)
+      - name: lastName
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter users by last name (partial match)
+      - name: phone
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter users by phone number (partial match)
+      - name: email
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter users by email address (partial match)
+    responses:
+      200:
+        description: List of users retrieved successfully
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsersListResponse"
+
+/api/v1/users/change-role/{id}:
+  put:
+    summary: Change the role of a specific user
+    tags: [users]
+    description: |
+      Only users with the **Admin** role are authorized to update another user's role.
+      You are allowed to assign any role **except** "Admin" to others.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the user whose role will be updated
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - roleId
+            properties:
+              roleId:
+                type: string
+                description: ObjectId of the new role
+                example: "32423423jlk3hj4k23hl4"
+    responses:
+      200:
+        description: User role updated successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: User role updated successfully
+                userId:
+                  type: string
+                  example: 60d0fe4f5311236168a109cb
+                newRole:
+                  type: string
+                  example: "User"

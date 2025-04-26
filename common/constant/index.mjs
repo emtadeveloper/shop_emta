@@ -13,6 +13,8 @@ export default {
         ADMIN: [1, 2, 3, 4, 5, 6,],
     }),
 
+    ALLOWED_SEARCH_FIELDS: ['firstName', 'lastName', 'phone', 'email'],
+
     TemplateResetPassword(resetUrl) {
         return `
         <p>برای تغییر رمز عبور، روی لینک زیر کلیک کنید:</p>

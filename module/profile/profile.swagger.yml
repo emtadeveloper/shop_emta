@@ -358,3 +358,24 @@ components:
           application/json:
             schema:
               $ref: "#/components/schemas/GenericSuccessMessage"
+
+/api/v1/profile/password:
+  put:
+    summary: Change user password
+    tags: [profile]
+    description: Update the current password to a new password
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PasswordChangeInput"
+    responses:
+      200:
+        description: Password updated successfully
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericSuccessMessage"

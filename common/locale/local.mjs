@@ -4,10 +4,35 @@ export const messages = {
         en: "User not found",
         status: 404,
     },
+    userRoleChanged: {
+        fa: "با موفقیت به روزرسانی شد",
+        en: "success updeate role",
+        status: 200
+    },
     successUpdateTheme: {
         fa: "تم با موفقیت به‌روزرسانی شد",
         en: "Theme updated successfully",
         status: 200,
+    },
+    firstNameTooShort: {
+        fa: "نام باید حداقل ۲ حرف باشد",
+        en: "First name must be at least 2 characters",
+        status: 400,
+    },
+    firstNameTooLong: {
+        fa: "نام نمی‌تواند بیشتر از ۵۰ حرف باشد",
+        en: "First name cannot be more than 50 characters",
+        status: 400,
+    },
+    lastNameTooShort: {
+        fa: "نام خانوادگی باید حداقل ۲ حرف باشد",
+        en: "Last name must be at least 2 characters",
+        status: 400,
+    },
+    lastNameTooLong: {
+        fa: "نام خانوادگی نمی‌تواند بیشتر از ۵۰ حرف باشد",
+        en: "Last name cannot be more than 50 characters",
+        status: 400,
     },
     successUpdate: {
         fa: "  موفقیت به‌روزرسانی شد",
