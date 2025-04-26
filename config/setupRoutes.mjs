@@ -9,6 +9,7 @@ import cityRouter from "../module/city/city.route.mjs";
 import roleRouter from "../module/role/role.route.mjs";
 import categoryRouter from "../module/category/category.route.mjs";
 import articleRouter from "../module/article/article.route.mjs";
+import approvaRouter from "../module/approva/approvalList.route.mjs";
 import constant from '../common/constant/index.mjs';
 import checkPermissions from "../common/middleware/checkPermissions.mjs"
 import Auth from "../common/middleware/authMiddleware.mjs";
@@ -27,6 +28,7 @@ const setupRoutes = async (app) => {
     app.use(`/api/${version}/role`, Auth, checkPermissions(constant.PERMISSIONS.ADMIN), roleRouter);
     app.use(`/api/${version}/category`, Auth, checkPermissions(constant.PERMISSIONS.ADMIN), categoryRouter);
     app.use(`/api/${version}/articles`, Auth, checkPermissions(constant.PERMISSIONS.ADMIN), articleRouter);
+    app.use(`/api/${version}/approval`, Auth, checkPermissions(constant.PERMISSIONS.ADMIN), approvaRouter);
 };
 
 export default setupRoutes

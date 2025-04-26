@@ -1,0 +1,147 @@
+tags:
+  - name: ApprovalList
+    description: Endpoints for managing approval lists and their approval steps.
+
+paths:
+  /api/v1/approval:
+    post:
+      tags:
+        - ApprovalList
+      summary: Create a new approval list
+      description: Creates a new approval list with specified name, category, and approval steps.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - approvalSteps
+              properties:
+                name:
+                  type: string
+                  example: Article Approval List
+                category:
+                  type: string
+                  example: 64d75fa563d0ccad3d91b88f
+                approvalSteps:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      role:
+                        type: string
+                        example: Editor
+                      user:
+                        type: string
+                        example: 64d75fa563d0ccad3d91b881
+                      decision:
+                        type: string
+                        enum: [pending, approved, rejected]
+                        default: pending
+                      comment:
+                        type: string
+                        example: Please review this article carefully.
+      responses:
+        "201":
+          description: Approval list created successfully
+        "400":
+          description: Validation error
+
+    get:
+      tags:
+        - ApprovalList
+      summary: Retrieve all approval lists
+      description: Fetches a list of all approval lists with their associated steps.
+      responses:
+        "200":
+          description: A list of approval lists
+        "500":
+          description: Server error
+
+  /api/v1/approval/{id}:
+    get:
+      tags:
+        - ApprovalList
+      summary: Retrieve an approval list by ID
+      description: Fetches the details of a specific approval list using its unique ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique identifier of the approval list
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Approval list details retrieved successfully
+        "404":
+          description: Approval list not found
+
+    put:
+      tags:
+        - ApprovalList
+      summary: Update an approval list by ID
+      description: Updates the details of an existing approval list identified by its unique ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique identifier of the approval list
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Updated Approval List
+                category:
+                  type: string
+                  example: 64d75fa563d0ccad3d91b88f
+                approvalSteps:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      role:
+                        type: string
+                        example: Chief Editor
+                      user:
+                        type: string
+                        example: 64d75fa563d0ccad3d91b889
+                      decision:
+                        type: string
+                        enum: [pending, approved, rejected]
+                        default: pending
+                      comment:
+                        type: string
+                        example: Updated the approval steps.
+      responses:
+        "200":
+          description: Approval list updated successfully
+        "404":
+          description: Approval list not found
+
+    delete:
+      tags:
+        - ApprovalList
+      summary: Delete an approval list by ID
+      description: Deletes a specific approval list using its unique ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique identifier of the approval list
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Approval list deleted successfully
+        "404":
+          description: Approval list not found

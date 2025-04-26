@@ -753,6 +753,30 @@ export const messages = {
         fa: "توکن الزامی است",
         en: "Token is required",
         status: 400
+    },
+    approvalListNotFound: {
+        fa: "لیست تاییدکننده پیدا نشد",
+        en: "Approval list not found",
+        status: 404,
+    },
+    successCreateApprovalList: {
+        fa: "لیست تاییدکننده با موفقیت ایجاد شد",
+        en: "Approval list created successfully",
+        status: 201,
+    },
+    successUpdateApprovalList: {
+        fa: "لیست تاییدکننده با موفقیت بروزرسانی شد",
+        en: "Approval list updated successfully",
+        status: 200,
+    },
+    successDeleteApprovalList: {
+        fa: "لیست تاییدکننده با موفقیت حذف شد",
+        en: "Approval list deleted successfully",
+        status: 200,
+    },
+    successGetApprovalList: {
+        fa: "اطلاعات لیست تاییدکننده با موفقیت دریافت شد",
+        en: "Approval list fetched successfully",
+        status: 200,
     }
-
 };
